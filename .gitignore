@@ -1,6 +1,8 @@
+# Bytecode
+bytecode/
 *.class
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
