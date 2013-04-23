@@ -6,3 +6,6 @@ bytecode/
 *.jar
 *.war
 *.ear
+
+# Vim
+*.swp
