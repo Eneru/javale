@@ -1,49 +1,26 @@
+import java.lang.*;
 import java.util.*;
+import java.net.*;
 
 public class Recette
 {
     private String nom;
-    private String[] categories;
     private String livre;
-    private String[] sousCategories;
-    private Date[] preparations;
-    private String[] ingredients;
-    private int[] pages;
-    private int note;
+    private int page;
     private URL lien;
-    private String commentaire;
     private String texte;
-
-    public Recette()
-    {
-    }
+    private Vector ingredients;
+    private Vector categories;
+    private Vector sousCategories;
+    private Vector preparations;
+    private int note;
+    private String commentaire;
 
     public Recette(String nom, String[] categories, String[] sousCategories)
     {
         this.nom = new String(nom);
-        this.categories = Array.copyOf(categories, categories.length);
-        this.sousCategories = Array.copyOf(sousCategories, sousCategories.length);
-    }
-
-    public Recette(String nom, String[] categories, String[] sousCategories, String livre)
-    {
-        this(nom, categories, sousCategories)
-        this.livre = new String(livre);
-    }
-
-    public Recette(String nom, String[] categories, String[] sousCategories)
-
-
-    public Recette(String nom, String[] categories, String[] sousCategories, String livre, int[] pages)
-    {
-        this(nom, categories, sousCategories, livre);
-        this.page = Array.copyOf(pages, pages.length);
-    }
-
-    public Recette(String nom, String[] categories, String[] sousCategories, String livre, int[] pages, String lien)
-    {
-        this(nom, categories, sousCategories, livre);
-        this.lien = new URL(lien);
+        this.categories = new Vector(Arrays.asList(categories));
+        this.sousCategories = new Vector(Arrays.asList(sousCategories));
     }
 
     public Recette(String nom, String[] categories, String[] sousCategories, String lien)
@@ -52,6 +29,20 @@ public class Recette
         this.lien = new URL(lien);
     }
 
+    public Recette(String nom, String[] categories, String[] sousCategories, String livre, int page)
+    {
+        this(nom, categories, sousCategories, livre);
+        this.livre = new String(livre);
+        this.page = page;
+    }
+
+    public Recette(String nom, String[] categories, String[] sousCategories, String livre, int page, String lien)
+    {
+        this(nom, categories, sousCategories, livre);
+        this.lien = new URL(lien);
+    }
+
+
     public String getNom()
     {
         return nom;
@@ -59,12 +50,12 @@ public class Recette
 
     public String[] getCategories()
     {
-        return categories;
+        return (String[]) categories.toArray();
     }
 
     public String[] getSousCategories()
     {
-        return sousCategories;
+        return (String[]) sousCategories.toArray();
     }
 
     public String getLivre()
@@ -83,8 +74,8 @@ public class Recette
         if (livre != null)
         {
             s.append(livre);
-            if (pages != null)
-                s.append(", pages " + pages.toString());
+            if (page != 0)
+                s.append(", page " + page);
         }
 
         if (lien != null)
@@ -94,19 +85,99 @@ public class Recette
             s.append(lien.toString());
         }
 
-        if (s.lenght() == 0)
+        if (s.length() == 0)
             return "Nulle-part";
         else
             return s.toString();
     }
 
+    public String getTexte()
+    {
+        return this.texte;
+    }
+
     public boolean estCategorie(String c)
     {
-        return bynarySearch(categories, c, null) >= 0;
+        return Arrays.binarySearch(this.getCategories(), c, null) >= 0;
     }
 
     public boolean estSousCategorie(String s)
     {
-        return bynarySearch(sousCategories, s, null) >= 0;
+        return Arrays.binarySearch(this.getSousCategories(), s, null) >= 0;
+    }
+
+    public void setNote(int note) throws Exception
+    {
+        if (note < 0 || note > 10)
+            throw new Exception("Note non valide (0 <= n <= 10).");
+        this.note = note;
+    }
+
+    public void ajouterCategorie(String categorie)
+    {
+        this.categories.add(categorie);
+    }
+
+    public void retirerCategorie(String categorie)
+    {
+        this.categories.remove(categorie);
+    }
+
+    public void ajouterSousCategorie(String sousCategorie)
+    {
+        this.sousCategories.add(sousCategorie);
+    }
+
+    public void retirerSousCategorie(String sousCategorie)
+    {
+        this.sousCategories.remove(sousCategorie);
+    }
+
+    public void ajouterDatePreparation(Date date)
+    {
+        this.preparations.add(date);
+    }
+
+    public void retirerDatePreparation(Date date)
+    {
+        this.preparations.remove(date);
+    }
+
+    public void setCommentaire(String commentaire)
+    {
+        this.commentaire = new String(commentaire);
+    }
+
+    public void setTexte(String texte)
+    {
+        this.texte = new String(texte);
+    }
+
+    public void setIngredients(String[] ingredients)
+    {
+        this.ingredients = new Vector(Arrays.asList(ingredients));
+    }
+
+    public void ajouterIngredient(String ingredient)
+    {
+        if (this.ingredients == null)
+        {
+            this.ingredients = new Vector();
+            this.ingredients.add(ingredient);
+        }
+        else
+        {
+            this.ingredients.add(ingredient);
+        }
+    }
+
+    public void retirerIngredient(String ingredient)
+    {
+        this.ingredients.remove(ingredient);
+    }
+
+    public void main(String[] args)
+    {
+        return;
     }
 }
