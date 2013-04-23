@@ -9,24 +9,31 @@ public class Recette
     private int page;
     private URL lien;
     private String texte;
-    private Vector ingredients;
-    private Vector categories;
-    private Vector sousCategories;
-    private Vector preparations;
+    private Vector<String> ingredients;
+    private Vector<String> categories;
+    private Vector<String> sousCategories;
+    private Vector<Date> preparations;
     private int note;
     private String commentaire;
 
     public Recette(String nom, String[] categories, String[] sousCategories)
     {
         this.nom = new String(nom);
-        this.categories = new Vector(Arrays.asList(categories));
-        this.sousCategories = new Vector(Arrays.asList(sousCategories));
+        this.categories = new Vector<String>(Arrays.asList(categories));
+        this.sousCategories = new Vector<String>(Arrays.asList(sousCategories));
     }
 
     public Recette(String nom, String[] categories, String[] sousCategories, String lien)
     {
         this(nom, categories, sousCategories);
-        this.lien = new URL(lien);
+        try
+        {
+            this.lien = new URL(lien);
+        }
+        catch (MalformedURLException mue)
+        {
+            System.err.println(mue.getMessage());
+        }
     }
 
     public Recette(String nom, String[] categories, String[] sousCategories, String livre, int page)
@@ -38,8 +45,9 @@ public class Recette
 
     public Recette(String nom, String[] categories, String[] sousCategories, String livre, int page, String lien)
     {
-        this(nom, categories, sousCategories, livre);
-        this.lien = new URL(lien);
+        this(nom, categories, sousCategories, lien);
+        this.livre = new String(livre);
+        this.page = page;
     }
 
 
@@ -155,14 +163,14 @@ public class Recette
 
     public void setIngredients(String[] ingredients)
     {
-        this.ingredients = new Vector(Arrays.asList(ingredients));
+        this.ingredients = new Vector<String>(Arrays.asList(ingredients));
     }
 
     public void ajouterIngredient(String ingredient)
     {
         if (this.ingredients == null)
         {
-            this.ingredients = new Vector();
+            this.ingredients = new Vector<String>();
             this.ingredients.add(ingredient);
         }
         else
