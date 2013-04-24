@@ -188,4 +188,9 @@ public class Recette
     {
         return;
     }
+
+    public String toString()
+    {
+        return this.nom + ", " + this.livre + ", " + this.page + ", " + this.lien.toString();
+    }
 }
