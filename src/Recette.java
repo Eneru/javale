@@ -2,7 +2,7 @@ import java.lang.*;
 import java.util.*;
 import java.net.*;
 
-public class Recette
+public class Recette implements Comparator<Recette>
 {
     private String nom;
     private String livre;
@@ -192,5 +192,35 @@ public class Recette
     public String toString()
     {
         return this.nom + ", " + this.livre + ", " + this.page + ", " + this.lien.toString();
+    }
+
+    public int compare(Recette r1, Recette r2)
+    {
+        return r1.nom.compareTo(r2.nom);
+    }
+
+    public boolean equals(Object o)
+    {
+        if (o instanceof Recette)
+        {
+            Recette r = (Recette) o;
+            if (this.nom.equals(r.nom)
+                && this.livre.equals(r.livre)
+                && this.page == r.page
+                && this.texte == r.texte
+                && this.note == r.note
+                && this.commentaire.equals(r.commentaire)
+                && Arrays.equals(this.ingredients.toArray(), r.ingredients.toArray())
+                && Arrays.equals(this.categories.toArray(), r.categories.toArray())
+                && Arrays.equals(this.sousCategories.toArray(), r.sousCategories.toArray())
+                && Arrays.equals(this.preparations.toArray(), r.preparations.toArray())
+                && this.lien.equals(r.lien)
+                )
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 }
