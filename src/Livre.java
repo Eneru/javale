@@ -185,7 +185,7 @@ public class Livre implements Comparator<Livre>
     }
 
     /**
-     * Test d'égalité de libres
+     * Test d'égalité de livres
      *
      * @return true si les livres sont égaux
      */
