@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.MalformedURLException;
 import java.lang.Object;
 import java.lang.StringBuffer;
-import java.lang.StringBuffer;
 import java.util.Vector<E>;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -80,7 +79,7 @@ public class Charger{
 	 * 		salé ou sucré
 	 */
 	public void setchoix (String Lechoix){
-		this.choixduPeuple = "/data/"+Lechoix+".txt";
+		this.choixduPeuple = "data/"+Lechoix+".txt";
 	}
 	
 	/**
@@ -264,7 +263,6 @@ public class Charger{
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 { 
-		  // on la découpe en une liste de mots
                     if (Charger.est_une_sous_cat(line)==true)
                     {
 						StringBuffer sb = new StringBuffer(line);
@@ -376,8 +374,80 @@ public class Charger{
             e.printStackTrace() ;
         }
 
-	return listRec;
+		return listRec;
 	}
+	
+	/**
+	 * Liste les sous catégories.
+	 * 
+	 * @return VallSousCat
+	 * 		Toutes les sous-catégories.
+	 */
+	 public static Vector<String> sousCat ()
+	 {
+		try
+        {
+            String line = null ;
+
+	   // Lecture
+            BufferedReader input = new BufferedReader(new FileReader(choixduPeuple));
+            try
+            {
+				Vector<String> VallSousCat = new Vector<String>();
+		// Pour toute ligne lue
+                while ((line = input.readLine()) != null)
+                { 
+                    if (Charger.est_une_sous_cat(line)==true)
+                    {
+						StringBuffer sb = new StringBuffer(line);
+						StringBuffer scat = new StringBuffer();
+						
+						for (int j = 2 ; sb.charAt(j)!=':' ;j++)
+						{
+							scat.append(sb.charAt(j));
+						}
+						VallSousCat.add(scat.toString());
+					}
+				}
+			}
+            finally // si jamais il y a un problème, on passe tout de même ici
+            {
+                input.close() ;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace() ;
+        }
+        
+        
+    }
+	
+	/**
+	 * Charge les recettes pour une seule sous-catégorie uniquement.
+	 * 
+	 * @param souscat
+	 * 		Sous-catégorie de recette.
+	 * @return Vsouscat
+	 * 		Vector avec les recettes d'une sous-catégorie.
+	 */
+	public static Vector<String> sousCatRecette (String souscat)
+	{
+		Vector<Recette> rec = Charger.recette();
+		Vector<Recette> Vsouscat = new Vector<Recette>();
+		
+		for (int i = 0; i<rec.size(); i++)
+		{
+			if (rec.elementAt(i).getSousCategories == souscat)
+			{
+				Vsouscat.add(rec.elementAt(i));
+			}
+		}
+		
+		return Vsouscat;
+	}
+	
+	
 	
 	/**
 	 * Nombre d'index de livre.
@@ -508,6 +578,5 @@ public class Charger{
 			return true;
 		return false;
 	}
-	
 	
 }
