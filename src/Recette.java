@@ -43,14 +43,14 @@ public class Recette implements Comparator<Recette>
     /**
      * Catégorie de la recette.
      * 
-     * @see Recette#getcategorie()
+     * @see Recette#getCategorie()
      */
     private String categorie;
     
     /**
      * Catégorie de la recette.
      * 
-     * @see Recette#getcategorie()
+     * @see Recette#getCategorie()
      */
     private String sousCategorie;
     
@@ -213,7 +213,7 @@ public class Recette implements Comparator<Recette>
      * 
      * @return categorie
      */
-    public String getcategorie()
+    public String getCategorie()
     {
         return this.categorie;
     }

@@ -1,5 +1,6 @@
 import java.util.Vector;
 import java.util.Arrays;
+import java.io.FileWriter;
 
 public class Sauvegarder
 {
@@ -14,12 +15,14 @@ public class Sauvegarder
     private FileWriter comW = new FileWriter("data/commentaire.txt");
     private FileWriter urlW = new FileWriter("data/url.txt");
     private FileWriter dateW = new FileWriter("data/preparation.txt");
+    private FileWriter texteW = new FileWriter("data/texte.txt");
     private FileWriter recettes;
 
     private Vector<String> listeLivres;
-    private Vector<String> listeCom;
-    private Vector<String> listeURL;
-    private Vector<String> listeDate
+    private Vector<String> listeComs;
+    private Vector<String> listeURLs;
+    private Vector<String> listeDates;
+    private Vector<String> listeTextes;
 
     public Sauvegarder(String categorie)
     {
@@ -29,62 +32,20 @@ public class Sauvegarder
             this.recettes = new FileWriter(this.sucre);
 
         this.listeLivres = new Vector<String>();
-        this.listeCom = new Vector<String>();
-        this.listeURL = new Vector<String>();
-        this.listeDate = new Vector<String>();
+        this.listeComs = new Vector<String>();
+        this.listeURLs = new Vector<String>();
+        this.listeDates = new Vector<String>();
     }
 
-    private indexLivre(String livre)
+    private int indexString(String chaine, Vector<String> liste, FileWriter fichier)
     {
-        int index = listeLivres.indexOf(livre);
+        int index = liste.indexOf(chaine);
 
         if (index == -1)
         {
-            listeLivres.add(livre);
-            index = listeLivres.indexOf(livre);
-            livresW.write(index + ". " + livre + "\n");
-        }
-
-        return index;
-    }
-
-    private indexCom(String commentaire)
-    {
-        int index = listeCom.indexOf(commentaire);
-
-        if (index == -1)
-        {
-            listeCom.add(commentaire);
-            index = listeCom.indexOf(commentaire);
-            comW.write(index + ". " + commentaire + "\n");
-        }
-
-        return index;
-    }
-
-    private indexURL(String lien)
-    {
-        int index = listeURL.indexOf(lien);
-
-        if (index == -1)
-        {
-            listeURL.add(lien);
-            index = listeURL.indexOf(lien);
-            urlW.write(index + ". " + lien + "\n");
-        }
-
-        return index;
-    }
-
-    private indexDate(String lien)
-    {
-        int index = listeURL.indexOf(lien);
-
-        if (index == -1)
-        {
-            listeURL.add(lien);
-            index = listeURL.indexOf(lien);
-            urlW.write(index + ". " + lien + "\n");
+            liste.add(chaine);
+            index = liste.indexOf(chaine);
+            fichier.write(index + ". " + chaine + "\n");
         }
 
         return index;
@@ -95,37 +56,39 @@ public class Sauvegarder
         String categorieCourante = "";
         for (int i = 0; i < listeRecettes.length; i++)
         {
-            if (! categorieCourante.equals(listeRecettes[i].categorie))
+            if (! categorieCourante.equals(listeRecettes[i].getCategorie()))
             {
-                categorieCourante = listeRecettes[i].categorie;
-                this.recette.write("\n* " + categorieCourante + ":\n");
+                categorieCourante = listeRecettes[i].getCategorie();
+                this.recettes.write("\n* " + categorieCourante + ":\n");
             }
 
-            this.recettes.write("- " + listeRecettes[i].nom);
+            this.recettes.write("- " + listeRecettes[i].getNom());
 
-            if (listeRecettes[i].livre != null)
-                this.recette.write("(" + indexLivre(listeRecettes[i].livre) + ") (" + listeRecettes[i].page +") " );
+            if (listeRecettes[i].getLivre() != null)
+                this.recettes.write("("
+                    + indexString(listeRecettes[i].getLivre(), listeLivres, livresW)
+                    + ") (" + listeRecettes[i].getPage() +") ");
             else
-                this.recette.write("() () ");
+                this.recettes.write("() () ");
 
-            if (listeRecettes[i].lien != null)
-                this.recette.write("(" + indexURL(listeRecettes[i].lien.toString()) + ") ");
+            if (listeRecettes[i].getLien() != null)
+                this.recettes.write("(" + indexURL(listeRecettes[i].getLien().toString(), listeURLs, urlW) + ") ");
             else
-                this.recette.write("() ");
+                this.recettes.write("() ");
 
-            this.recettes.write("(" + listeRecettes[i].note + ") ");
+            this.recettes.write("(" + listeRecettes[i].getNote() + ") ");
 
-            if (listeRecettes[i].preparation != null)
-                this.recettes.write("(" + indexDate(listeRecettes[i].preparation.toString()) + ") ");
+            if (listeRecettes[i].getDate() != null)
+                this.recettes.write("(" + indexDate(listeRecettes[i].getDate().toString(), listeDates, dateW) + ") ");
             else
-                this.recette.write("() ");
+                this.recettes.write("() ");
 
-            if (listeRecettes[i].texte != null)
-                this.recettes.write("(" + indexTexte(listeRecettes[i].texte) + ") ");
+            if (listeRecettes[i].getTexte() != null)
+                this.recettes.write("(" + indexTexte(listeRecettes[i].getTexte(), listeTextes, texteW) + ") ");
             else
-                this.recette.write("() ");
+                this.recettes.write("() ");
 
-            this.recette.write("\n");
+            this.recettes.write("\n");
         }
     }
 }
