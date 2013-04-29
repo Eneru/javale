@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.lang.Exception;
 import java.util.Arrays;
 import java.sql.Date;
@@ -265,16 +266,6 @@ public class Recette implements Comparator<Recette>
     public String getTexte()
     {
         return this.texte;
-    }
-
-    public boolean estCategorie(String c)
-    {
-        return Arrays.binarySearch(this.getcategorie(), c, null) >= 0;
-    }
-
-    public boolean estsousCategorie(String s)
-    {
-        return Arrays.binarySearch(this.getsousCategorie(), s, null) >= 0;
     }
 
     /**

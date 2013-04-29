@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 import java.lang.Object;
 import java.lang.StringBuffer;
-import java.util.Vector<E>;
+import java.util.Vector;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
