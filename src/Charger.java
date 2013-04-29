@@ -410,7 +410,7 @@ public class Charger{
 		
 		for (int i = 0; i<rec.size(); i++)
 		{
-			if (rec.elementAt(i).getSousCategories == souscat)
+			if (rec.elementAt(i).getsousCategorie == souscat)
 			{
 				Vsouscat.add(rec.elementAt(i));
 			}
