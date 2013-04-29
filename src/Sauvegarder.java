@@ -92,8 +92,15 @@ public class Sauvegarder
 
     public void sauvegarderRecettes(Recette[] listeRecettes)
     {
+        String categorieCourante = "";
         for (int i = 0; i < listeRecettes.length; i++)
         {
+            if (! categorieCourante.equals(listeRecettes[i].categorie))
+            {
+                categorieCourante = listeRecettes[i].categorie;
+                this.recette.write("\n* " + categorieCourante + ":\n");
+            }
+
             this.recettes.write("- " + listeRecettes[i].nom);
 
             if (listeRecettes[i].livre != null)
