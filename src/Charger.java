@@ -456,8 +456,7 @@ public class Charger{
 	 */
 	public int countNbPrep()
 	{
-		prep();
-		return nbUrl;
+		return prep().size();
 	}
 	
 	/**
