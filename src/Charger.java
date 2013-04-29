@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 import java.lang.Object;
 import java.lang.StringBuffer;
-import java.util.Vector<E>;
+import java.util.Vector;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -408,7 +408,7 @@ public class Charger{
 		
 		for (int i = 0; i<rec.size(); i++)
 		{
-			if (rec.elementAt(i).getSousCategories == souscat)
+			if (rec.elementAt(i).getsousCategorie == souscat)
 			{
 				Vsouscat.add(rec.elementAt(i));
 			}
