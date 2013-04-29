@@ -1,6 +1,7 @@
 import java.util.Vector;
 import java.util.Arrays;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class Sauvegarder
 {
@@ -11,11 +12,11 @@ public class Sauvegarder
     // private final String Url = "data/url.txt";
     // private final String Preparation = "data/preparation.txt"; // texte avec les préparations
 
-    private FileWriter livresW = new FileWriter("data/index_livres.txt");
-    private FileWriter comW = new FileWriter("data/commentaire.txt");
-    private FileWriter urlW = new FileWriter("data/url.txt");
-    private FileWriter dateW = new FileWriter("data/preparation.txt");
-    private FileWriter texteW = new FileWriter("data/texte.txt");
+    private FileWriter livresW;
+    private FileWriter comW;
+    private FileWriter urlW;
+    private FileWriter dateW;
+    private FileWriter texteW;
     private FileWriter recettes;
 
     private Vector<String> listeLivres;
@@ -26,18 +27,31 @@ public class Sauvegarder
 
     public Sauvegarder(String categorie)
     {
-        if (categorie.equals("sale"))
-            this.recettes = new FileWriter(this.sale);
-        else if (categorie.equals("sucre"))
-            this.recettes = new FileWriter(this.sucre);
-
         this.listeLivres = new Vector<String>();
         this.listeComs = new Vector<String>();
         this.listeURLs = new Vector<String>();
         this.listeDates = new Vector<String>();
+
+        try
+        {
+            if (categorie.equals("sale"))
+                this.recettes = new FileWriter(this.sale);
+            else if (categorie.equals("sucre"))
+                this.recettes = new FileWriter(this.sucre);
+
+            this.livresW = new FileWriter("data/index_livres.txt");
+            this.comW = new FileWriter("data/commentaire.txt");
+            this.urlW = new FileWriter("data/url.txt");
+            this.dateW = new FileWriter("data/preparation.txt");
+            this.texteW = new FileWriter("data/texte.txt");
+        }
+        catch(IOException ioe)
+        {
+            System.err.println(ioe.getMessage());
+        }
     }
 
-    private int indexString(String chaine, Vector<String> liste, FileWriter fichier)
+    private int indiceString(String chaine, Vector<String> liste, FileWriter fichier)
     {
         int index = liste.indexOf(chaine);
 
@@ -45,7 +59,14 @@ public class Sauvegarder
         {
             liste.add(chaine);
             index = liste.indexOf(chaine);
-            fichier.write(index + ". " + chaine + "\n");
+            try
+            {
+                fichier.write(index + ". " + chaine + "\n");
+            }
+            catch (IOException ioe)
+            {
+                System.err.println(ioe.getMessage());
+            }
         }
 
         return index;
@@ -53,42 +74,51 @@ public class Sauvegarder
 
     public void sauvegarderRecettes(Recette[] listeRecettes)
     {
+        Recette[] listeRecettesTriee = Arrays.copyOf(listeRecettes, listeRecettes.length);
+        Arrays.sort(listeRecettesTriee, new Recette());
         String categorieCourante = "";
-        for (int i = 0; i < listeRecettes.length; i++)
+        for (int i = 0; i < listeRecettesTriee.length; i++)
         {
-            if (! categorieCourante.equals(listeRecettes[i].getCategorie()))
+            try
             {
-                categorieCourante = listeRecettes[i].getCategorie();
-                this.recettes.write("\n* " + categorieCourante + ":\n");
+                if (! categorieCourante.equals(listeRecettesTriee[i].getCategorie()))
+                {
+                    categorieCourante = listeRecettesTriee[i].getCategorie();
+                    this.recettes.write("\n* " + categorieCourante + ":\n");
+                }
+
+                this.recettes.write("- " + listeRecettesTriee[i].getNom());
+
+                if (listeRecettesTriee[i].getLivre() != null)
+                    this.recettes.write("("
+                        + indiceString(listeRecettesTriee[i].getLivre(), listeLivres, livresW)
+                        + ") (" + listeRecettesTriee[i].getPage() +") ");
+                else
+                    this.recettes.write("() () ");
+
+                if (listeRecettesTriee[i].getLien() != null)
+                    this.recettes.write("(" + indiceString(listeRecettesTriee[i].getLien().toString(), listeURLs, urlW) + ") ");
+                else
+                    this.recettes.write("() ");
+
+                this.recettes.write("(" + listeRecettesTriee[i].getNote() + ") ");
+
+                if (listeRecettesTriee[i].getDate() != null)
+                    this.recettes.write("(" + indiceString(listeRecettesTriee[i].getDate().toString(), listeDates, dateW) + ") ");
+                else
+                    this.recettes.write("() ");
+
+                if (listeRecettesTriee[i].getTexte() != null)
+                    this.recettes.write("(" + indiceString(listeRecettesTriee[i].getTexte(), listeTextes, texteW) + ") ");
+                else
+                    this.recettes.write("() ");
+
+                this.recettes.write("\n");
             }
-
-            this.recettes.write("- " + listeRecettes[i].getNom());
-
-            if (listeRecettes[i].getLivre() != null)
-                this.recettes.write("("
-                    + indexString(listeRecettes[i].getLivre(), listeLivres, livresW)
-                    + ") (" + listeRecettes[i].getPage() +") ");
-            else
-                this.recettes.write("() () ");
-
-            if (listeRecettes[i].getLien() != null)
-                this.recettes.write("(" + indexURL(listeRecettes[i].getLien().toString(), listeURLs, urlW) + ") ");
-            else
-                this.recettes.write("() ");
-
-            this.recettes.write("(" + listeRecettes[i].getNote() + ") ");
-
-            if (listeRecettes[i].getDate() != null)
-                this.recettes.write("(" + indexDate(listeRecettes[i].getDate().toString(), listeDates, dateW) + ") ");
-            else
-                this.recettes.write("() ");
-
-            if (listeRecettes[i].getTexte() != null)
-                this.recettes.write("(" + indexTexte(listeRecettes[i].getTexte(), listeTextes, texteW) + ") ");
-            else
-                this.recettes.write("() ");
-
-            this.recettes.write("\n");
+            catch (IOException ioe)
+            {
+                System.err.println(ioe.getMessage());
+            }
         }
     }
 }

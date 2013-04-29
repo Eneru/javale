@@ -82,6 +82,10 @@ public class Recette implements Comparator<Recette>
      */
     private String texte;
 
+    public Recette()
+    {
+    }
+
     /**
      * Constructeur d'une recette.
      * 
@@ -94,6 +98,7 @@ public class Recette implements Comparator<Recette>
      */
     public Recette(String nom, String categorie, String sousCategorie)
     {
+        this();
         this.nom = new String(nom);
         this.categorie = new String(categorie);
         this.sousCategorie = new String(sousCategorie);
@@ -380,7 +385,7 @@ public class Recette implements Comparator<Recette>
      */
     public int compare(Recette r1, Recette r2)
     {
-        return r1.nom.compareTo(r2.nom);
+        return r1.sousCategorie.compareTo(r2.sousCategorie);
     }
 
     /**
