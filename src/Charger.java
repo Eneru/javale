@@ -69,23 +69,24 @@ public class Charger{
             BufferedReader input = new BufferedReader(new FileReader(Index));
             try
             {
+				int passage = 0;
 				Vector<String> listIndex = new Vector<String>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
-					if (nbIndex < 10)
+					if (passage < 10)
 					{
 						StringTokenizer st = new StringTokenizer(line,".  ");
 						st.nextToken(); // récupère l'indice, que nous n'utiliserons pas car les indices sont croissants
 						listIndex.add(st.nextToken()); // récupère la chaîne de l'index et la met dans un Vector
-						nbIndex++;
+						passage++;
 					}
 					else
 					{
 						StringTokenizer st = new StringTokenizer(line,". ");
 						st.nextToken(); // récupère l'indice, que nous n'utiliserons pas car les indices sont croissants
 						listIndex.add(st.nextToken()); // récupère la chaîne de l'index et la met dans un Vector
-						nbIndex++;
+						passage++;
 					}
 				}
             }
@@ -124,7 +125,6 @@ public class Charger{
 					StringTokenizer st = new StringTokenizer(line,". ");
 					st.nextToken(); // récupère l'indice, que nous n'utiliserons pas car les indices sont croissants
 					listCom.add(st.nextToken()); // récupère la chaîne de l'index et la met dans un Vector
-					nbCom++;
 				}
             }
             finally // si jamais il y a un problème, on passe tout de même ici
@@ -162,7 +162,6 @@ public class Charger{
 					StringTokenizer st = new StringTokenizer(line,". ");
 					st.nextToken(); // récupère l'indice, que nous n'utiliserons pas car les indices sont croissants
 					listPrep.add(st.nextToken()); // récupère la chaîne de l'index et la met dans un Vector
-					nbPrep++;
 				}
             }
             finally // si jamais il y a un problème, on passe tout de même ici
@@ -200,7 +199,6 @@ public class Charger{
 					StringTokenizer st = new StringTokenizer(line,". ");
 					st.nextToken(); // récupère l'indice, que nous n'utiliserons pas car les indices sont croissants
 					listUrl.add(st.nextToken()); // récupère la chaîne de l'index et la met dans un Vector
-					nbUrl++;
 				}
             }
             finally // si jamais il y a un problème, on passe tout de même ici
@@ -428,8 +426,7 @@ public class Charger{
 	 */
 	public int countNbIndex()
 	{
-		index();
-		return nbIndex;
+		return index().size();
 	}
 	
 	/**
@@ -439,8 +436,7 @@ public class Charger{
 	 */
 	public int countNbCom()
 	{
-		com();
-		return nbCom;
+		return com().size();
 	}
 	
 	/**
@@ -450,8 +446,7 @@ public class Charger{
 	 */
 	public int countNbUrl()
 	{
-		url();
-		return nbUrl;
+		return url().size();
 	}
 	
 	/**
