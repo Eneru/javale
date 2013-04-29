@@ -43,43 +43,15 @@ public class Charger{
 	 * (salé ou sucré)
 	 */
 	private final String choixduPeuple;
-	
+		
 	/**
-	 * Nombre le ligne d'index.
+	 * Constructeur de la class Charger.
 	 * 
-	 * @see Charger#countNbIndex()
+	 * @param s
+	 * 		Le choix du fichier de recettes.
 	 */
-	private nbIndex = 0;
-	
-	/**
-	 * Nombre le ligne de commentaires.
-	 * 
-	 * @see Charger#countNbCom()
-	 */
-	private nbCom = 0;
-	
-	/**
-	 * Nombre le ligne d'url.
-	 * 
-	 * @see Charger#countNbUrl()
-	 */
-	private nbUrl = 0;
-	
-	/**
-	 * Nombre le ligne de préparations.
-	 * 
-	 * @see Charger#countNbPrep()
-	 */
-	private nbPrep = 0;
-	
-	/**
-	 * Change le choix de catégorie.
-	 * 
-	 * @param Lechoix
-	 * 		salé ou sucré
-	 */
-	public void setchoix (String Lechoix){
-		this.choixduPeuple = "data/"+Lechoix+".txt";
+	public Charger(String s){
+		this.choixduPeuple = "data/"+s+".txt";
 	}
 	
 	/**
@@ -87,7 +59,7 @@ public class Charger{
 	 * 
 	 * @return Un tableau avec les livres utilisés dans l'index.
 	 */
-	public static Vector<String> index ()
+	public Vector<String> index ()
 	{
 		try
         {
@@ -101,7 +73,7 @@ public class Charger{
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
-					if (passage < nbIndex)
+					if (nbIndex < 10)
 					{
 						StringTokenizer st = new StringTokenizer(line,".  ");
 						st.nextToken(); // récupère l'indice, que nous n'utiliserons pas car les indices sont croissants
@@ -135,7 +107,7 @@ public class Charger{
 	 * 
 	 * @return Un tableau avec les commentaires dans l'ordre des indices.
 	 */
-	public static Vector<String> com () // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
+	public Vector<String> com () // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
 	{
 		try
         {
@@ -173,7 +145,7 @@ public class Charger{
 	 * 
 	 * @return Un tableau avec les préparations dans l'ordre des indices.
 	 */
-	public static Vector<String> prep () // de même que pour les commentaires
+	public Vector<String> prep () // de même que pour les commentaires
 	{
 		try
         {
@@ -211,7 +183,7 @@ public class Charger{
 	 * 
 	 * @return Un tableau avec les URLs dans l'ordre des indices.
 	 */
-	public static Vector<String> url () // de même que pour les commentaires
+	public Vector<String> url () // de même que pour les commentaires
 	{
 		try
         {
@@ -249,7 +221,7 @@ public class Charger{
 	 * 
 	 * @return Un tableau avec toutes les recettes.
 	 */
-	public static Vector<Recette> recette ()
+	public Vector<Recette> recette ()
     {
         try
         {
@@ -297,7 +269,7 @@ public class Charger{
 									case 1 : if(sb.length>0)
 											{
 												int indexLivre = Integer.parseInt(sb.toString());
-												String livre = Charger.index().elementAt(indexLivre-1); // élément indice -1 du vector de la liste d'index
+												String livre = index().elementAt(indexLivre-1); // élément indice -1 du vector de la liste d'index
 												r.setLivre(livre);
 											}
 											passage++;
@@ -314,7 +286,7 @@ public class Charger{
 									case 3 : if(sb.length>0)
 											{
 												int indexLien = Integer.parseInt(sb.toString());
-												String link = Charger.url().elementAt(indexLien-1); // élément indice -1 du vector de la liste d'Url
+												String link = url().elementAt(indexLien-1); // élément indice -1 du vector de la liste d'Url
 												r.setLien(link);
 											}
 											passage++;
@@ -331,7 +303,7 @@ public class Charger{
 									case 5 : if(sb.length>0)
 											{
 												int indexCom = Integer.parseInt(sb.toString());
-												String commentaire = Charger.com().elementAt(indexCom-1); // élément indice -1 du vector de la liste d'index;
+												String commentaire = com().elementAt(indexCom-1); // élément indice -1 du vector de la liste d'index;
 												r.setCommentaire(commentaire);
 											}
 											passage++;
@@ -348,7 +320,7 @@ public class Charger{
 									case 7 : if(sb.length>0)
 											{
 												int indexTexte = Integer.parseInt(sb.toString());
-												String text = Charger.prep().elementAt(indexTexte-1); // élément indice -1 du vector de la liste de préparation;
+												String text = prep().elementAt(indexTexte-1); // élément indice -1 du vector de la liste de préparation;
 												r.setTexte(text);
 											}
 											passage++;
@@ -383,7 +355,7 @@ public class Charger{
 	 * @return VallSousCat
 	 * 		Toutes les sous-catégories.
 	 */
-	 public static Vector<String> sousCat ()
+	 public Vector<String> sousCat ()
 	 {
 		try
         {
@@ -431,9 +403,9 @@ public class Charger{
 	 * @return Vsouscat
 	 * 		Vector avec les recettes d'une sous-catégorie.
 	 */
-	public static Vector<String> sousCatRecette (String souscat)
+	public Vector<String> sousCatRecette (String souscat)
 	{
-		Vector<Recette> rec = Charger.recette();
+		Vector<Recette> rec = recette();
 		Vector<Recette> Vsouscat = new Vector<Recette>();
 		
 		for (int i = 0; i<rec.size(); i++)
@@ -454,9 +426,9 @@ public class Charger{
 	 * 
 	 * @return Le nombre de lignes comptées dans l'index.
 	 */
-	public static int countNbIndex()
+	public int countNbIndex()
 	{
-		Charger.index();
+		index();
 		return nbIndex;
 	}
 	
@@ -465,9 +437,9 @@ public class Charger{
 	 * 
 	 * @return Le nombre de lignes comptées dans le fichier de commentaires.
 	 */
-	public static int countNbCom()
+	public int countNbCom()
 	{
-		Charger.com();
+		com();
 		return nbCom;
 	}
 	
@@ -476,9 +448,9 @@ public class Charger{
 	 * 
 	 * @return Le nombre de lignes comptées dans le fichier d'URLs.
 	 */
-	public static int countNbUrl()
+	public int countNbUrl()
 	{
-		Charger.url();
+		url();
 		return nbUrl;
 	}
 	
@@ -487,9 +459,9 @@ public class Charger{
 	 * 
 	 * @return Le nombre de lignes comptées dans le fichier de préparations.
 	 */
-	public static int countNbPrep()
+	public int countNbPrep()
 	{
-		Charger.prep();
+		prep();
 		return nbUrl;
 	}
 	
@@ -500,8 +472,8 @@ public class Charger{
 	 * 		La sous-catégorie dans laquelle in compte.
 	 * @return nbRecSousCat
 	 */
-	public static int countNbRecettePourSousCat(String souscat)
-	{
+	public int countNbRecettePourSousCat(String souscat)
+	/*{
 		try
         {
             String line = null ;
@@ -551,6 +523,9 @@ public class Charger{
 		}
 
 	return nbRecSousCat;
+	}*/
+	{
+		return sousCatRecette(souscat).size();
 	}
    
     /**
