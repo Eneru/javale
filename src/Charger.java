@@ -308,7 +308,7 @@ public class Charger{
 											
 									case 6 : if(sb.length()>0)
 											{
-												Date date = new Date(Long.parseLong(sb.toString()).longValue());
+												Date date = new Date(Long.parseLong(sb.toString()));
 												r.setDate(date);
 											}
 											passage++;
@@ -407,7 +407,7 @@ public class Charger{
 		
 		for (int i = 0; i<rec.size(); i++)
 		{
-			if (rec.elementAt(i).getSousCategories() == souscat)
+			if (rec.elementAt(i).getSousCategorie() == souscat)
 			{
 				Vsouscat.add(rec.elementAt(i));
 			}

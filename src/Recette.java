@@ -223,7 +223,7 @@ public class Recette implements Comparator<Recette>
      * 
      * @return sousCategorie
      */
-    public String getsousCategorie()
+    public String getSousCategorie()
     {
         return this.sousCategorie;
     }
