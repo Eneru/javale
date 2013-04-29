@@ -1,12 +1,9 @@
 import java.lang.Exception;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 import java.sql.Date;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.lang.Object;
-import java.lang.StringBuffer;
-import java.util.Vector;
+import java.lang.*;
+import java.util.*;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,6 +58,7 @@ public class Charger{
 	 */
 	public Vector<String> index ()
 	{
+		Vector<String> listIndex = new Vector<String>();
 		try
         {
             String line = null ;
@@ -70,7 +68,6 @@ public class Charger{
             try
             {
 				int passage = 0;
-				Vector<String> listIndex = new Vector<String>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
@@ -110,6 +107,7 @@ public class Charger{
 	 */
 	public Vector<String> com () // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
 	{
+		Vector<String> listCom = new Vector<String>();
 		try
         {
             String line = null ;
@@ -118,7 +116,6 @@ public class Charger{
             BufferedReader input = new BufferedReader(new FileReader(Com));
             try
             {
-				Vector<String> listCom = new Vector<String>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
@@ -147,6 +144,7 @@ public class Charger{
 	 */
 	public Vector<String> prep () // de même que pour les commentaires
 	{
+		Vector<String> listPrep = new Vector<String>();
 		try
         {
             String line = null ;
@@ -155,7 +153,6 @@ public class Charger{
             BufferedReader input = new BufferedReader(new FileReader(Preparation));
             try
             {
-				Vector<String> listPrep = new Vector<String>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
@@ -184,6 +181,7 @@ public class Charger{
 	 */
 	public Vector<String> url () // de même que pour les commentaires
 	{
+		Vector<String> listUrl = new Vector<String>();
 		try
         {
             String line = null ;
@@ -192,7 +190,6 @@ public class Charger{
             BufferedReader input = new BufferedReader(new FileReader(Url));
             try
             {
-				Vector<String> listUrl = new Vector<String>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
@@ -221,6 +218,10 @@ public class Charger{
 	 */
 	public Vector<Recette> recette ()
     {
+		Vector<Recette> listRec = new Vector<Recette>();
+		StringBuffer scat = new StringBuffer();
+		Recette r;
+		
         try
         {
             String line = null ;
@@ -229,14 +230,12 @@ public class Charger{
             BufferedReader input = new BufferedReader(new FileReader(choixduPeuple));
             try
             {
-				Vector<Recette> listRec = new Vector<Recette>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 { 
                     if (Charger.est_une_sous_cat(line)==true)
                     {
 						StringBuffer sb = new StringBuffer(line);
-						StringBuffer scat = new StringBuffer();
 						
 						for (int j = 2 ; sb.charAt(j)!=':' ;j++)
 						{
@@ -247,15 +246,15 @@ public class Charger{
 					else if(Charger.est_une_recette(line)==true)
 					{
 						StringTokenizer st = new StringTokenizer(line,"- ");
-						String sanstiret = st.nextToken;
+						String sanstiret = st.nextToken();
 						st = new StringTokenizer(sanstiret," (");
 						int passage=0;
-						while (hasMoreTokens())
+						while (st.hasMoreTokens())
 						{
 							if (passage==0)
 							{
 								String rec = st.nextToken().toString();
-								Recette r = new Recette(rec,choixduPeuple,scat.toString());
+								r = new Recette(rec,choixduPeuple,scat.toString());
 								passage++;
 							}
 							else
@@ -264,7 +263,7 @@ public class Charger{
 								StringBuffer sb = new StringBuffer(option);
 								sb.deleteCharAt(sb.length()-1);
 								switch (passage){
-									case 1 : if(sb.length>0)
+									case 1 : if(sb.length()>0)
 											{
 												int indexLivre = Integer.parseInt(sb.toString());
 												String livre = index().elementAt(indexLivre-1); // élément indice -1 du vector de la liste d'index
@@ -273,7 +272,7 @@ public class Charger{
 											passage++;
 											break;
 									
-									case 2 : if(sb.length>0)
+									case 2 : if(sb.length()>0)
 											{ 
 												int page = Integer.parseInt(sb.toString());
 												r.setPage(page);
@@ -281,7 +280,7 @@ public class Charger{
 											passage++;
 											break;
 											
-									case 3 : if(sb.length>0)
+									case 3 : if(sb.length()>0)
 											{
 												int indexLien = Integer.parseInt(sb.toString());
 												String link = url().elementAt(indexLien-1); // élément indice -1 du vector de la liste d'Url
@@ -290,7 +289,7 @@ public class Charger{
 											passage++;
 											break;
 											
-									case 4 : if(sb.length>0)
+									case 4 : if(sb.length()>0)
 											{
 												int note = Integer.parseInt(sb.toString());
 												r.setNote(note);
@@ -298,7 +297,7 @@ public class Charger{
 											passage++;
 											break;
 											
-									case 5 : if(sb.length>0)
+									case 5 : if(sb.length()>0)
 											{
 												int indexCom = Integer.parseInt(sb.toString());
 												String commentaire = com().elementAt(indexCom-1); // élément indice -1 du vector de la liste d'index;
@@ -307,7 +306,7 @@ public class Charger{
 											passage++;
 											break;
 											
-									case 6 : if(sb.length>0)
+									case 6 : if(sb.length()>0)
 											{
 												Date date = new Date(Long.parseLong(sb.toString()).longValue());
 												r.setDate(date);
@@ -315,7 +314,7 @@ public class Charger{
 											passage++;
 											break;
 											
-									case 7 : if(sb.length>0)
+									case 7 : if(sb.length()>0)
 											{
 												int indexTexte = Integer.parseInt(sb.toString());
 												String text = prep().elementAt(indexTexte-1); // élément indice -1 du vector de la liste de préparation;
@@ -355,6 +354,7 @@ public class Charger{
 	 */
 	 public Vector<String> sousCat ()
 	 {
+		 Vector<String> VallSousCat = new Vector<String>();
 		try
         {
             String line = null ;
@@ -363,7 +363,6 @@ public class Charger{
             BufferedReader input = new BufferedReader(new FileReader(choixduPeuple));
             try
             {
-				Vector<String> VallSousCat = new Vector<String>();
 		// Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 { 
@@ -401,14 +400,14 @@ public class Charger{
 	 * @return Vsouscat
 	 * 		Vector avec les recettes d'une sous-catégorie.
 	 */
-	public Vector<String> sousCatRecette (String souscat)
+	public Vector<Recette> sousCatRecette (String souscat)
 	{
 		Vector<Recette> rec = recette();
 		Vector<Recette> Vsouscat = new Vector<Recette>();
 		
 		for (int i = 0; i<rec.size(); i++)
 		{
-			if (rec.elementAt(i).getsousCategorie == souscat)
+			if (rec.elementAt(i).getSousCategories() == souscat)
 			{
 				Vsouscat.add(rec.elementAt(i));
 			}
