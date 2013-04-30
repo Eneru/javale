@@ -1,12 +1,12 @@
-import java.lang.Exception;
-import java.sql.Date;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.util.Vector;
-import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.Exception;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
+import java.util.Vector;
 
 /**
  * @class Charger
