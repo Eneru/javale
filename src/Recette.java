@@ -1,17 +1,17 @@
-import java.util.Comparator;
+import java.lang.Comparable;
 import java.lang.Exception;
-import java.util.Arrays;
-import java.sql.Date;
+import java.lang.Object;
+import java.util.Date;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.lang.Object;
+import java.util.Arrays;
 import java.util.Vector;
 
 /**
  * @class Recette
  * @brief Classe de gestion des recettes.
  */
-public class Recette implements Comparator<Recette>
+public class Recette implements Comparable<Recette>
 {
     /**
      * Nom de la recette.
@@ -392,51 +392,9 @@ public class Recette implements Comparator<Recette>
         return sb.toString();
     }
 
-    /**
-     * Compare deux recettes:
-     * - Valeur négative : r1.nom < r2.nom
-     * - Zéro : r1.nom == r2.nom
-     * - Valeur positive : r1.nom > r2.nom
-     * 
-     * @param r1
-     *      Première recette à comparer.
-     * @param r2
-     *      Deuxième recette à comparer.
-     * @return Ordre des recettes.
-     */
-    public int compare(Recette r1, Recette r2)
+    public int compareTo(Recette r)
     {
-        return r1.sousCategorie.compareTo(r2.sousCategorie);
+        return this.nom.compareTo(r.nom);
     }
 
-    /**
-     * Teste l'égalité de deux recettes
-     * 
-     * @param o
-     *      Recette que l'on compare à celle en cours.
-     * @return true si elles ont égales, false sinon.
-     */
-    public boolean equals(Object o)
-    {
-        if (o instanceof Recette)
-        {
-            Recette r = (Recette) o;
-            if (this.nom.equals(r.nom)
-                && this.livre.equals(r.livre)
-                && this.page == r.page
-                && this.texte.equals(r.texte)
-                && this.note == r.note
-                && this.commentaire.equals(r.commentaire)
-                && this.categorie.equals(r.categorie)
-                && this.sousCategorie.equals(r.sousCategorie)
-                && this.date.equals(r.date)
-                && this.lien.equals(r.lien)
-                )
-                return true;
-            else
-                return false;
-        }
-        else
-            return false;
-    }
 }

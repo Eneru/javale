@@ -1,5 +1,5 @@
-import java.util.Vector;
 import java.util.Arrays;
+import java.util.Vector;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -71,7 +71,8 @@ public class Sauvegarder extends ChargeSauv
             texteW = new FileWriter(Sauvegarder.textes, true);
 
             Recette[] listeRecettesTriee = listeRecettes.clone();
-            Arrays.sort(listeRecettesTriee, new Recette());
+            Arrays.sort(listeRecettesTriee, new RecetteSousCatComparator());
+            // Arrays.sort(listeRecettesTriee, new Recette());
             String sousCategorieCourante = "";
             for (int i = 0; i < listeRecettesTriee.length; i++)
             {
