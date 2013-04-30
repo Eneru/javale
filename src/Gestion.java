@@ -7,7 +7,10 @@ public class Gestion
     public static void main(String[] args)
     {
         Charger c = new Charger("sale");
-        Recette[] r = c.getRecettes().toArray(new Recette[0]);
+        Vector<Recette> rr = c.getRecettes();
+        rr.add(new Recette("lolilol", "sale", "Viandes", "ah", 3));
+        Recette[] r = rr.toArray(new Recette[0]);
+        // Recette[] r = c.getRecettes().toArray(new Recette[0]);
         // for (int i = 0; i < r.length; i++)
             // System.out.println(r[i].toString());
         Sauvegarder s = new Sauvegarder("sale");
