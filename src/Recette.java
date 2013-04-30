@@ -15,67 +15,67 @@ public class Recette implements Comparator<Recette>
 {
     /**
      * Nom de la recette.
-     * 
+     *
      * @see Recette#getNom()
      */
     private String nom;
-    
+
     /**
      * Nom du livre.
-     * 
+     *
      * @see Recette#getLivre()
      */
     private String livre;
-    
+
     /**
      * Numéro de la page dans le livre.
-     * 
+     *
      * @see Recette#getPage()
      */
     private int page = -1;
-    
+
     /**
      * Lien de la recette.
-     * 
+     *
      * @see Recette#getLien()
      */
     private URL lien;
-    
+
     /**
      * Catégorie de la recette.
-     * 
+     *
      * @see Recette#getCategorie()
      */
     private String categorie;
-    
+
     /**
      * Catégorie de la recette.
-     * 
+     *
      * @see Recette#getCategorie()
      */
     private String sousCategorie;
-    
+
     /**
      * Commentaire de la recette.
      * 
      * @see Recette#getCommentaire()
      */
     private String commentaire;
-    
+
     /**
      * Note donnée à la recette.
      * 
      * @see Recette#getNote()
      */
     private int note;
-    
+
     /**
      * Date de préparation de la recette.
      * 
      * @see Recette#getDate()
      */
     private Date date;
-    
+
     /**
      * Préparation de la recette.
      * 
@@ -197,7 +197,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.livre;
     }
-    
+
     /**
      * Sélecteur d'une page.
      * 
@@ -207,7 +207,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.page;
     }
-    
+
     /**
      * Sélecteur d'un lien.
      * 
@@ -217,7 +217,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.lien;
     }
-    
+
     /**
      * Sélecteur d'une catégorie.
      * 
@@ -237,7 +237,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.sousCategorie;
     }
-    
+
     /**
      * Sélecteur d'un commentaire.
      * 
@@ -247,7 +247,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.commentaire;
     }
-    
+
     /**
      * Sélecteur d'une date.
      * 
@@ -257,7 +257,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.date;
     }
-    
+
     /**
      * Sélecteur d'une note.
      * 
@@ -297,7 +297,7 @@ public class Recette implements Comparator<Recette>
     {
         this.livre = new String(livre);
     }
-    
+
     /**
      * Modificateur de la page.
      * 
@@ -323,7 +323,7 @@ public class Recette implements Comparator<Recette>
             throw new Exception("Note non valide (0 <= n <= 10).");
         this.note = note;
     }
-    
+
     /**
      * Modificateur de l'Url.
      * 
@@ -341,7 +341,7 @@ public class Recette implements Comparator<Recette>
             System.err.println(mue.getMessage());
         }
     }
-    
+
     /**
      * Modificateur du commentaire.
      * 
@@ -352,7 +352,7 @@ public class Recette implements Comparator<Recette>
     {
         this.commentaire = new String(commentaire);
     }
-    
+
     /**
      * Modificateur de la date.
      * 
