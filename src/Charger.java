@@ -14,30 +14,6 @@ import java.util.Vector;
  */
 public class Charger extends ChargeSauv
 {
-    /**
-     * Choix de la catégorie.
-     *
-     * (salé ou sucré)
-     */
-    private final String choixduPeuple;
-
-    private final Vector<Recette> recettes;
-    /**
-     * Constructeur de la class Charger.
-     *
-     * @param s
-     *      Le choix du fichier de recettes.
-     */
-    public Charger(String s){
-        this.choixduPeuple = s.equals("sale") ? Charger.sale : Charger.sucre;
-        this.recettes = lireRecettes();
-    }
-
-    public Vector<Recette> getRecettes()
-    {
-        return this.recettes;
-    }
-
     public static Vector<String> lireIndexes(String fichier)
     {
         Vector <String> indexes = new Vector<String>();
@@ -128,7 +104,7 @@ public class Charger extends ChargeSauv
         return Charger.lireIndexes(Charger.url);
     }
 
-    private String motParentheses(String chaine)
+    private static String motParentheses(String chaine)
     {
         String[] mots = chaine.split("\\(|\\)");
         if (mots.length > 0)
@@ -141,8 +117,10 @@ public class Charger extends ChargeSauv
      *
      * @return Un tableau avec toutes les recettes.
      */
-    public Vector<Recette> lireRecettes()
+    public static Vector<Recette> lireRecettes(String categorie)
     {
+        String choixduPeuple = categorie.equals("sale") ? Charger.sale : Charger.sucre;
+
         Vector<Recette> listRec = new Vector<Recette>();
         Vector<String> livres = Charger.indexLivres();
         Vector<String> coms = Charger.indexComs();
@@ -241,50 +219,11 @@ public class Charger extends ChargeSauv
     }
 
     /**
-     * Liste les sous catégories.
-     *
-     * @return VallSousCat
-     *       Toutes les sous-catégories.
-     */
-    public Vector<String> sousCat ()
-    {
-        Vector<String> scat = new Vector<String>();
-        Recette[] rec = recettes.toArray(new Recette[0]);
-        for (int i = 0; i < rec.length; i++)
-            if (!scat.contains(rec[i].getSousCategorie()))
-                scat.add(rec[i].getSousCategorie());
-
-        return scat;
-    }
-
-    /**
-     * Charge les recettes pour une seule sous-catégorie uniquement.
-     *
-     * @param souscat
-     *       Sous-catégorie de recette.
-     * @return Vsouscat
-     *       Vector avec les recettes d'une sous-catégorie.
-     */
-    public Vector<Recette> sousCatRecette (String souscat)
-    {
-        Vector<Recette> Vsouscat = new Vector<Recette>();
-        Recette[] rec = recettes.toArray(new Recette[0]);
-
-        for (int i = 0; i < rec.length; i++)
-        {
-            if (rec[i].getSousCategorie().equals(souscat))
-                Vsouscat.add(rec[i]);
-        }
-
-        return Vsouscat;
-    }
-
-    /**
      * Nombre d'index de livre.
      *
      * @return Le nombre de lignes comptées dans l'index.
      */
-    public int countNbIndex()
+    public static int countNbIndex()
     {
         return indexLivres().size();
     }
@@ -294,7 +233,7 @@ public class Charger extends ChargeSauv
      *
      * @return Le nombre de lignes comptées dans le fichier de commentaires.
      */
-    public int countNbCom()
+    public static int countNbCom()
     {
         return indexComs().size();
     }
@@ -304,7 +243,7 @@ public class Charger extends ChargeSauv
      *
      * @return Le nombre de lignes comptées dans le fichier d'URLs.
      */
-    public int countNbUrl()
+    public static int countNbUrl()
     {
         return indexURL().size();
     }
@@ -314,21 +253,9 @@ public class Charger extends ChargeSauv
      *
      * @return Le nombre de lignes comptées dans le fichier de préparations.
      */
-    public int countNbPrep()
+    public static int countNbPrep()
     {
         return indexDates().size();
-    }
-
-    /**
-     * Nombre de recettes dans une sous-catégorie donnée.
-     *
-     * @param souscat
-     *      La sous-catégorie dans laquelle in compte.
-     * @return nbRecSousCat
-     */
-    public int countNbRecettePourSousCat(String souscat)
-    {
-        return sousCatRecette(souscat).size();
     }
 
     /**
@@ -336,7 +263,7 @@ public class Charger extends ChargeSauv
      * @brief Teste si le mot est une sous catégorie
      * @return true si c'est une sous-catégorie, false sinon
      */
-    public static boolean est_une_sous_cat(String s)
+    private static boolean est_une_sous_cat(String s)
     {
         if (s.length() == 0)
             return false;
@@ -351,7 +278,7 @@ public class Charger extends ChargeSauv
      * @brief Teste si le mot est un début d'une recette
      * @return true si c'est une recette, false sinon
      */
-    public static boolean est_une_recette(String s)
+    private static boolean est_une_recette(String s)
     {
         if (s.length() == 0)
             return false;

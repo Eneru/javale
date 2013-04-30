@@ -46,7 +46,6 @@ public class Sauvegarder extends ChargeSauv
         return index;
     }
 
-
     public void sauvegarderRecettes(Recette[] listeRecettes)
     {
         FileWriter livresW;
@@ -60,9 +59,9 @@ public class Sauvegarder extends ChargeSauv
         {
 
             if (this.categorie.equals("sale"))
-                recettes = new FileWriter(Sauvegarder.sale, true);
+                recettes = new FileWriter(Sauvegarder.sale);
             else
-                recettes = new FileWriter(Sauvegarder.sucre, true);
+                recettes = new FileWriter(Sauvegarder.sucre);
 
             livresW = new FileWriter(Sauvegarder.livres, true);
             comW = new FileWriter(Sauvegarder.com, true);
@@ -99,7 +98,7 @@ public class Sauvegarder extends ChargeSauv
                         recettes.write("() ");
 
                     if (listeRecettesTriee[i].getDate() != null)
-                        recettes.write("(" + indiceString(listeRecettesTriee[i].getDate().toString(), listeDates, dateW) + ") ");
+                        recettes.write("(" + indiceString("" + listeRecettesTriee[i].getDate().getTime(), listeDates, dateW) + ") ");
                     else
                         recettes.write("() ");
 
