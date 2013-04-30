@@ -12,28 +12,19 @@ import java.io.FileNotFoundException;
  * @class Charger
  * @brief Gestion des charges des informations de toutes les recettes
  */
-public class Charger
+public class Charger extends ChargeSauv
 {
-    public static final String sale    = ChargeSauv.sale;
-    // private static final String sale    = "test_sale";
-    public static final String sucre   = ChargeSauv.sucre;
-    public static final String livres  = ChargeSauv.livres;
-    public static final String com     = ChargeSauv.com;
-    public static final String url     = ChargeSauv.url;
-    public static final String dates   = ChargeSauv.dates;
-    public static final String textes  = ChargeSauv.textes;
-
     /**
      * Choix de la catégorie.
-     * 
+     *
      * (salé ou sucré)
      */
     private final String choixduPeuple;
-        
+
     private final Vector<Recette> recettes;
     /**
      * Constructeur de la class Charger.
-     * 
+     *
      * @param s
      *      Le choix du fichier de recettes.
      */
@@ -41,7 +32,7 @@ public class Charger
         this.choixduPeuple = s.equals("sale") ? Charger.sale : Charger.sucre;
         this.recettes = lireRecettes();
     }
-    
+
     public Vector<Recette> getRecettes()
     {
         return this.recettes;
@@ -95,48 +86,48 @@ public class Charger
 
     /**
      * Charge les indexs dans un tableau.
-     * 
+     *
      * @return Un tableau avec les livres utilisés dans l'index.
      */
     public static Vector<String> indexLivres()
     {
         return Charger.lireIndexes(Charger.livres);
     }
-    
+
     /**
      * Charge les commentaires dans un tableau.
-     * 
+     *
      * @return Un tableau avec les commentaires dans l'ordre des indices.
      */
     public static Vector<String> indexComs() // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
     {
         return Charger.lireIndexes(Charger.com);
     }
-    
+
     /**
      * Charge les préparations dans un tableau.
-     * 
+     *
      * @return Un tableau avec les préparations dans l'ordre des indices.
      */
     public static Vector<String> indexDates() // de même que pour les commentaires
     {
         return Charger.lireIndexes(Charger.dates);
     }
-    
+
     public static Vector<String> indexTextes()
     {
         return Charger.lireIndexes(Charger.textes);
     }
     /**
      * Charge les URLs dans un tableau.
-     * 
+     *
      * @return Un tableau avec les URLs dans l'ordre des indices.
      */
     public static Vector<String> indexURL() // de même que pour les commentaires
     {
         return Charger.lireIndexes(Charger.url);
     }
-    
+
     private String motParentheses(String chaine)
     {
         String[] mots = chaine.split("\\(|\\)");
@@ -147,7 +138,7 @@ public class Charger
     }
     /**
      * Charge les recettes (salé ou sucré) dans un tableau
-     * 
+     *
      * @return Un tableau avec toutes les recettes.
      */
     public Vector<Recette> lireRecettes()
@@ -158,17 +149,17 @@ public class Charger
         Vector<String> urls = Charger.indexURL();
         Vector<String> preps = Charger.indexDates();
         Vector<String> textes = Charger.indexTextes();
-        
+
         try
         {
             String line = null ;
 
-       // Lecture
+            // Lecture
             BufferedReader input = new BufferedReader(new FileReader(choixduPeuple));
             try
             {
                 String scat = null;
-        // Pour toute ligne lue
+                // Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
                     if (Charger.est_une_sous_cat(line)==true)
@@ -248,10 +239,10 @@ public class Charger
 
         return listRec;
     }
-    
+
     /**
      * Liste les sous catégories.
-     * 
+     *
      * @return VallSousCat
      *       Toutes les sous-catégories.
      */
@@ -265,10 +256,10 @@ public class Charger
 
         return scat;
     }
-    
+
     /**
      * Charge les recettes pour une seule sous-catégorie uniquement.
-     * 
+     *
      * @param souscat
      *       Sous-catégorie de recette.
      * @return Vsouscat
@@ -287,20 +278,20 @@ public class Charger
 
         return Vsouscat;
     }
-    
+
     /**
      * Nombre d'index de livre.
-     * 
+     *
      * @return Le nombre de lignes comptées dans l'index.
      */
     public int countNbIndex()
     {
         return indexLivres().size();
     }
-    
+
     /**
      * Nombre total de commentaires.
-     * 
+     *
      * @return Le nombre de lignes comptées dans le fichier de commentaires.
      */
     public int countNbCom()
