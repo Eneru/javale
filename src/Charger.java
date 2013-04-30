@@ -1,44 +1,19 @@
-import java.lang.Exception;
-import java.sql.Date;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.lang.*;
-import java.util.*;
-import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.Exception;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
+import java.util.Vector;
 
 /**
  * @class Charger
  * @brief Gestion des charges des informations de toutes les recettes
  */
-public class Charger
+public class Charger extends ChargeSauv
 {
-        /**
-     * Choix de la catégorie.
-     * 
-     * (salé ou sucré)
-     */
-    private final String choixduPeuple;
-        
-    private final Vector<Recette> recettes;
-    /**
-     * Constructeur de la class Charger.
-     * 
-     * @param s
-     *      Le choix du fichier de recettes.
-     */
-    public Charger(String s){
-        this.choixduPeuple = s.equals("sale") ? ChargeSauv.sale : ChargeSauv.sucre;
-        this.recettes = lireRecettes();
-    }
-    
-    public Vector<Recette> getRecettes()
-    {
-        return this.recettes;
-    }
-
     public static Vector<String> lireIndexes(String fichier)
     {
         Vector <String> indexes = new Vector<String>();
@@ -87,77 +62,82 @@ public class Charger
 
     /**
      * Charge les indexs dans un tableau.
-     * 
+     *
      * @return Un tableau avec les livres utilisés dans l'index.
      */
     public static Vector<String> indexLivres()
     {
-        return Charger.lireIndexes(ChargeSauv.livres);
+        return Charger.lireIndexes(Charger.livres);
     }
-    
+
     /**
      * Charge les commentaires dans un tableau.
-     * 
+     *
      * @return Un tableau avec les commentaires dans l'ordre des indices.
      */
     public static Vector<String> indexComs() // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
     {
-        return Charger.lireIndexes(ChargeSauv.com);
+        return Charger.lireIndexes(Charger.com);
     }
-    
+
     /**
      * Charge les préparations dans un tableau.
-     * 
+     *
      * @return Un tableau avec les préparations dans l'ordre des indices.
      */
     public static Vector<String> indexDates() // de même que pour les commentaires
     {
-        return Charger.lireIndexes(ChargeSauv.dates);
+        return Charger.lireIndexes(Charger.dates);
     }
-    
+
     public static Vector<String> indexTextes()
     {
-        return Charger.lireIndexes(ChargeSauv.textes);
+        return Charger.lireIndexes(Charger.textes);
     }
     /**
      * Charge les URLs dans un tableau.
-     * 
+     *
      * @return Un tableau avec les URLs dans l'ordre des indices.
      */
     public static Vector<String> indexURL() // de même que pour les commentaires
     {
-        return Charger.lireIndexes(ChargeSauv.url);
+        return Charger.lireIndexes(Charger.url);
     }
-    
-    private String motParentheses(String chaine)
+
+    private static String motParentheses(String chaine)
     {
         String[] mots = chaine.split("\\(|\\)");
-        return mots[0];
+        if (mots.length > 0)
+            return mots[0];
+        else
+            return "";
     }
     /**
      * Charge les recettes (salé ou sucré) dans un tableau
-     * 
+     *
      * @return Un tableau avec toutes les recettes.
      */
-    public Vector<Recette> lireRecettes()
+    public static Vector<Recette> lireRecettes(String categorie)
     {
+        String choixduPeuple = categorie.equals("sale") ? Charger.sale : Charger.sucre;
+
         Vector<Recette> listRec = new Vector<Recette>();
         Vector<String> livres = Charger.indexLivres();
         Vector<String> coms = Charger.indexComs();
         Vector<String> urls = Charger.indexURL();
         Vector<String> preps = Charger.indexDates();
         Vector<String> textes = Charger.indexTextes();
-        
+
         try
         {
             String line = null ;
 
-       // Lecture
+            // Lecture
             BufferedReader input = new BufferedReader(new FileReader(choixduPeuple));
             try
             {
                 String scat = null;
-        // Pour toute ligne lue
+                // Pour toute ligne lue
                 while ((line = input.readLine()) != null)
                 {
                     if (Charger.est_une_sous_cat(line)==true)
@@ -178,7 +158,7 @@ public class Charger
                         }
                         if (mots.length >= 4 && mots[3] != null)
                         {
-                            String s = motParentheses(mots[2]);
+                            String s = motParentheses(mots[3]);
                             r.setPage(Integer.parseInt(s.equals("") ? "-1" : s));
                         }
                         if (mots.length >= 5 && mots[4] != null)
@@ -237,62 +217,23 @@ public class Charger
 
         return listRec;
     }
-    
-    /**
-     * Liste les sous catégories.
-     * 
-     * @return VallSousCat
-     *       Toutes les sous-catégories.
-     */
-    public Vector<String> sousCat ()
-    {
-        Vector<String> scat = new Vector<String>();
-        Recette[] rec = recettes.toArray(new Recette[0]);
-        for (int i = 0; i < rec.length; i++)
-            if (!scat.contains(rec[i].getSousCategorie()))
-                scat.add(rec[i].getSousCategorie());
 
-        return scat;
-    }
-    
-    /**
-     * Charge les recettes pour une seule sous-catégorie uniquement.
-     * 
-     * @param souscat
-     *       Sous-catégorie de recette.
-     * @return Vsouscat
-     *       Vector avec les recettes d'une sous-catégorie.
-     */
-    public Vector<Recette> sousCatRecette (String souscat)
-    {
-        Vector<Recette> Vsouscat = new Vector<Recette>();
-        Recette[] rec = recettes.toArray(new Recette[0]);
-
-        for (int i = 0; i < rec.length; i++)
-        {
-            if (rec[i].getSousCategorie().equals(souscat))
-                Vsouscat.add(rec[i]);
-        }
-
-        return Vsouscat;
-    }
-    
     /**
      * Nombre d'index de livre.
-     * 
+     *
      * @return Le nombre de lignes comptées dans l'index.
      */
-    public int countNbIndex()
+    public static int countNbIndex()
     {
         return indexLivres().size();
     }
-    
+
     /**
      * Nombre total de commentaires.
-     * 
+     *
      * @return Le nombre de lignes comptées dans le fichier de commentaires.
      */
-    public int countNbCom()
+    public static int countNbCom()
     {
         return indexComs().size();
     }
@@ -302,7 +243,7 @@ public class Charger
      *
      * @return Le nombre de lignes comptées dans le fichier d'URLs.
      */
-    public int countNbUrl()
+    public static int countNbUrl()
     {
         return indexURL().size();
     }
@@ -312,21 +253,9 @@ public class Charger
      *
      * @return Le nombre de lignes comptées dans le fichier de préparations.
      */
-    public int countNbPrep()
+    public static int countNbPrep()
     {
         return indexDates().size();
-    }
-
-    /**
-     * Nombre de recettes dans une sous-catégorie donnée.
-     *
-     * @param souscat
-     *      La sous-catégorie dans laquelle in compte.
-     * @return nbRecSousCat
-     */
-    public int countNbRecettePourSousCat(String souscat)
-    {
-        return sousCatRecette(souscat).size();
     }
 
     /**
@@ -334,7 +263,7 @@ public class Charger
      * @brief Teste si le mot est une sous catégorie
      * @return true si c'est une sous-catégorie, false sinon
      */
-    public static boolean est_une_sous_cat(String s)
+    private static boolean est_une_sous_cat(String s)
     {
         if (s.length() == 0)
             return false;
@@ -349,7 +278,7 @@ public class Charger
      * @brief Teste si le mot est un début d'une recette
      * @return true si c'est une recette, false sinon
      */
-    public static boolean est_une_recette(String s)
+    private static boolean est_une_recette(String s)
     {
         if (s.length() == 0)
             return false;

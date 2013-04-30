@@ -1,81 +1,81 @@
-import java.util.Comparator;
+import java.lang.Comparable;
 import java.lang.Exception;
-import java.util.Arrays;
-import java.sql.Date;
+import java.lang.Object;
+import java.util.Date;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.lang.Object;
+import java.util.Arrays;
 import java.util.Vector;
 
 /**
  * @class Recette
  * @brief Classe de gestion des recettes.
  */
-public class Recette implements Comparator<Recette>
+public class Recette implements Comparable<Recette>
 {
     /**
      * Nom de la recette.
-     * 
+     *
      * @see Recette#getNom()
      */
     private String nom;
-    
+
     /**
      * Nom du livre.
-     * 
+     *
      * @see Recette#getLivre()
      */
     private String livre;
-    
+
     /**
      * Numéro de la page dans le livre.
-     * 
+     *
      * @see Recette#getPage()
      */
-    private int page;
-    
+    private int page = -1;
+
     /**
      * Lien de la recette.
-     * 
+     *
      * @see Recette#getLien()
      */
     private URL lien;
-    
+
     /**
      * Catégorie de la recette.
-     * 
+     *
      * @see Recette#getCategorie()
      */
     private String categorie;
-    
+
     /**
      * Catégorie de la recette.
-     * 
+     *
      * @see Recette#getCategorie()
      */
     private String sousCategorie;
-    
+
     /**
      * Commentaire de la recette.
      * 
      * @see Recette#getCommentaire()
      */
     private String commentaire;
-    
+
     /**
      * Note donnée à la recette.
      * 
      * @see Recette#getNote()
      */
     private int note;
-    
+
     /**
      * Date de préparation de la recette.
      * 
      * @see Recette#getDate()
      */
     private Date date;
-    
+
     /**
      * Préparation de la recette.
      * 
@@ -197,7 +197,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.livre;
     }
-    
+
     /**
      * Sélecteur d'une page.
      * 
@@ -207,7 +207,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.page;
     }
-    
+
     /**
      * Sélecteur d'un lien.
      * 
@@ -217,7 +217,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.lien;
     }
-    
+
     /**
      * Sélecteur d'une catégorie.
      * 
@@ -237,7 +237,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.sousCategorie;
     }
-    
+
     /**
      * Sélecteur d'un commentaire.
      * 
@@ -247,7 +247,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.commentaire;
     }
-    
+
     /**
      * Sélecteur d'une date.
      * 
@@ -257,7 +257,7 @@ public class Recette implements Comparator<Recette>
     {
         return this.date;
     }
-    
+
     /**
      * Sélecteur d'une note.
      * 
@@ -297,7 +297,7 @@ public class Recette implements Comparator<Recette>
     {
         this.livre = new String(livre);
     }
-    
+
     /**
      * Modificateur de la page.
      * 
@@ -323,7 +323,7 @@ public class Recette implements Comparator<Recette>
             throw new Exception("Note non valide (0 <= n <= 10).");
         this.note = note;
     }
-    
+
     /**
      * Modificateur de l'Url.
      * 
@@ -341,7 +341,7 @@ public class Recette implements Comparator<Recette>
             System.err.println(mue.getMessage());
         }
     }
-    
+
     /**
      * Modificateur du commentaire.
      * 
@@ -352,7 +352,7 @@ public class Recette implements Comparator<Recette>
     {
         this.commentaire = new String(commentaire);
     }
-    
+
     /**
      * Modificateur de la date.
      * 
@@ -392,51 +392,9 @@ public class Recette implements Comparator<Recette>
         return sb.toString();
     }
 
-    /**
-     * Compare deux recettes:
-     * - Valeur négative : r1.nom < r2.nom
-     * - Zéro : r1.nom == r2.nom
-     * - Valeur positive : r1.nom > r2.nom
-     * 
-     * @param r1
-     *      Première recette à comparer.
-     * @param r2
-     *      Deuxième recette à comparer.
-     * @return Ordre des recettes.
-     */
-    public int compare(Recette r1, Recette r2)
+    public int compareTo(Recette r)
     {
-        return r1.sousCategorie.compareTo(r2.sousCategorie);
+        return this.nom.compareTo(r.nom);
     }
 
-    /**
-     * Teste l'égalité de deux recettes
-     * 
-     * @param o
-     *      Recette que l'on compare à celle en cours.
-     * @return true si elles ont égales, false sinon.
-     */
-    public boolean equals(Object o)
-    {
-        if (o instanceof Recette)
-        {
-            Recette r = (Recette) o;
-            if (this.nom.equals(r.nom)
-                && this.livre.equals(r.livre)
-                && this.page == r.page
-                && this.texte.equals(r.texte)
-                && this.note == r.note
-                && this.commentaire.equals(r.commentaire)
-                && this.categorie.equals(r.categorie)
-                && this.sousCategorie.equals(r.sousCategorie)
-                && this.date.equals(r.date)
-                && this.lien.equals(r.lien)
-                )
-                return true;
-            else
-                return false;
-        }
-        else
-            return false;
-    }
 }

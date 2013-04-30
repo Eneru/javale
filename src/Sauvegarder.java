@@ -1,32 +1,10 @@
-import java.util.Vector;
 import java.util.Arrays;
+import java.util.Vector;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Sauvegarder
+public class Sauvegarder extends ChargeSauv
 {
-    // private static final String sale    = ChargeSauv.sale;
-    // private static final String sucre   = ChargeSauv.sucre;
-    // private static final String livres  = ChargeSauv.livres;
-    // private static final String com     = ChargeSauv.com;
-    // private static final String url     = ChargeSauv.url;
-    // private static final String dates   = ChargeSauv.dates;
-    // private static final String textes  = ChargeSauv.textes;
-
-    private static final String sale    = "test_sale";
-    private static final String sucre   = "test_sucre";
-    private static final String livres  = "test_livres";
-    private static final String com     = "test_com";
-    private static final String url     = "test_url";
-    private static final String dates   = "test_dates";
-    private static final String textes  = "test_textes";
-
-    private FileWriter livresW;
-    private FileWriter comW;
-    private FileWriter urlW;
-    private FileWriter dateW;
-    private FileWriter texteW;
-    private FileWriter recettes;
 
     private Vector<String> listeLivres;
     private Vector<String> listeComs;
@@ -34,31 +12,16 @@ public class Sauvegarder
     private Vector<String> listeDates;
     private Vector<String> listeTextes;
 
+    private String categorie;
+
     public Sauvegarder(String categorie)
     {
+        this.categorie = new String(categorie);
         this.listeLivres = Charger.indexLivres();
         this.listeComs = Charger.indexComs();
         this.listeURLs = Charger.indexURL();
         this.listeDates = Charger.indexDates();
         this.listeTextes = Charger.indexTextes();
-
-        try
-        {
-            if (categorie.equals("sale"))
-                this.recettes = new FileWriter(Sauvegarder.sale);
-            else
-                this.recettes = new FileWriter(Sauvegarder.sucre);
-
-            this.livresW = new FileWriter(Sauvegarder.livres);
-            this.comW = new FileWriter(Sauvegarder.com);
-            this.urlW = new FileWriter(Sauvegarder.url);
-            this.dateW = new FileWriter(Sauvegarder.dates);
-            this.texteW = new FileWriter(Sauvegarder.textes);
-        }
-        catch(IOException ioe)
-        {
-            System.err.println(ioe.getMessage());
-        }
     }
 
     private int indiceString(String chaine, Vector<String> liste, FileWriter fichier)
@@ -72,6 +35,7 @@ public class Sauvegarder
             try
             {
                 fichier.write(index + ". " + chaine + "\n");
+                fichier.flush();
             }
             catch (IOException ioe)
             {
@@ -84,51 +48,92 @@ public class Sauvegarder
 
     public void sauvegarderRecettes(Recette[] listeRecettes)
     {
-        Recette[] listeRecettesTriee = Arrays.copyOf(listeRecettes, listeRecettes.length);
-        Arrays.sort(listeRecettesTriee, new Recette());
-        String sousCategorieCourante = "";
-        for (int i = 0; i < listeRecettesTriee.length; i++)
+        FileWriter livresW;
+        FileWriter comW;
+        FileWriter urlW;
+        FileWriter dateW;
+        FileWriter texteW;
+        FileWriter recettes;
+
+        try
         {
-            try
+
+            if (this.categorie.equals("sale"))
+                recettes = new FileWriter(Sauvegarder.sale);
+            else
+                recettes = new FileWriter(Sauvegarder.sucre);
+
+            livresW = new FileWriter(Sauvegarder.livres, true);
+            comW = new FileWriter(Sauvegarder.com, true);
+            urlW = new FileWriter(Sauvegarder.url, true);
+            dateW = new FileWriter(Sauvegarder.dates, true);
+            texteW = new FileWriter(Sauvegarder.textes, true);
+
+            Recette[] listeRecettesTriee = listeRecettes.clone();
+            Arrays.sort(listeRecettesTriee, new RecetteSousCatComparator());
+            // Arrays.sort(listeRecettesTriee, new Recette());
+            String sousCategorieCourante = "";
+            for (int i = 0; i < listeRecettesTriee.length; i++)
             {
-                if (! sousCategorieCourante.equals(listeRecettesTriee[i].getSousCategorie()))
+                try
                 {
-                    sousCategorieCourante = listeRecettesTriee[i].getSousCategorie();
-                    this.recettes.write("\n* " + sousCategorieCourante + ":\n");
+                    if (! sousCategorieCourante.equals(listeRecettesTriee[i].getSousCategorie()))
+                    {
+                        sousCategorieCourante = listeRecettesTriee[i].getSousCategorie();
+                        recettes.write("\n* " + sousCategorieCourante + ":\n");
+                    }
+
+                    recettes.write("- " + listeRecettesTriee[i].getNom() + " ");
+
+                    if (listeRecettesTriee[i].getLivre() != null)
+                        recettes.write("("
+                            + (indiceString(listeRecettesTriee[i].getLivre(), listeLivres, livresW) + 1)
+                            + ") (" + listeRecettesTriee[i].getPage() +") ");
+                    else
+                        recettes.write("() () ");
+
+                    if (listeRecettesTriee[i].getLien() != null)
+                        recettes.write("(" + indiceString(listeRecettesTriee[i].getLien().toString(), listeURLs, urlW) + ") ");
+                    else
+                        recettes.write("() ");
+
+                    if (listeRecettesTriee[i].getDate() != null)
+                        recettes.write("(" + indiceString("" + listeRecettesTriee[i].getDate().getTime(), listeDates, dateW) + ") ");
+                    else
+                        recettes.write("() ");
+
+                    recettes.write("(" + listeRecettesTriee[i].getNote() + ") ");
+
+                    if (listeRecettesTriee[i].getCommentaire() != null)
+                        recettes.write("(" + indiceString(listeRecettesTriee[i].getCommentaire(), listeComs, comW) + ") ");
+                    else
+                        recettes.write("() ");
+
+                    if (listeRecettesTriee[i].getTexte() != null)
+                        recettes.write("(" + indiceString(listeRecettesTriee[i].getTexte(), listeTextes, texteW) + ") ");
+                    else
+                        recettes.write("() ");
+
+                    recettes.write("\n");
                 }
-
-                this.recettes.write("- " + listeRecettesTriee[i].getNom() + " ");
-
-                if (listeRecettesTriee[i].getLivre() != null)
-                    this.recettes.write("("
-                        + indiceString(listeRecettesTriee[i].getLivre(), listeLivres, livresW)
-                        + ") (" + listeRecettesTriee[i].getPage() +") ");
-                else
-                    this.recettes.write("() () ");
-
-                if (listeRecettesTriee[i].getLien() != null)
-                    this.recettes.write("(" + indiceString(listeRecettesTriee[i].getLien().toString(), listeURLs, urlW) + ") ");
-                else
-                    this.recettes.write("() ");
-
-                this.recettes.write("(" + listeRecettesTriee[i].getNote() + ") ");
-
-                if (listeRecettesTriee[i].getDate() != null)
-                    this.recettes.write("(" + indiceString(listeRecettesTriee[i].getDate().toString(), listeDates, dateW) + ") ");
-                else
-                    this.recettes.write("() ");
-
-                if (listeRecettesTriee[i].getTexte() != null)
-                    this.recettes.write("(" + indiceString(listeRecettesTriee[i].getTexte(), listeTextes, texteW) + ") ");
-                else
-                    this.recettes.write("() ");
-
-                this.recettes.write("\n");
+                catch (IOException ioe)
+                {
+                    System.err.println(ioe.getMessage());
+                }
             }
-            catch (IOException ioe)
-            {
-                System.err.println(ioe.getMessage());
-            }
+
+            recettes.flush();
+
+            recettes.close();
+            livresW.close();
+            comW.close();
+            urlW.close();
+            dateW.close();
+            texteW.close();
+        }
+        catch(IOException ioe)
+        {
+            System.err.println(ioe.getMessage());
         }
     }
 }
