@@ -123,6 +123,34 @@ public class Gestion
             sucrees.add(r);
     }
 
+    private void sortRecettes()
+    {
+        Recette[] suc = sucrees.toArray(new Recette[0]);
+        Recette[] sale = salees.toArray(new Recette[0]);
+
+        Arrays.sort(suc);
+        Arrays.sort(sale);
+        sucrees = new Vector<Recette>(Arrays.asList(suc));
+        salees = new Vector<Recette>(Arrays.asList(sale));
+    }
+
+    private String[] listeRecetteToStringTab(Vector<Recette> recettes)
+    {
+        Vector<String> liste = new Vector<String>();
+        for (int i = 0; i < recettes.size(); i++)
+            liste.add(recettes.elementAt(i).getNom());
+
+        return liste.toArray(new String[0]);
+    }
+
+    public boolean existeRecette(String recette)
+    {
+        sortRecettes();
+
+        return Arrays.binarySearch(listeRecetteToStringTab(sucrees), recette) >= 0
+                || Arrays.binarySearch(listeRecetteToStringTab(salees), recette) >= 0;
+    }
+
     public static void main(String[] args)
     {
         Vector<Recette> rr = Charger.lireRecettes("sale");
