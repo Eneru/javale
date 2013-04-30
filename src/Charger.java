@@ -2,8 +2,7 @@ import java.lang.Exception;
 import java.sql.Date;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.lang.*;
-import java.util.*;
+import java.util.Vector;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +14,16 @@ import java.io.FileNotFoundException;
  */
 public class Charger
 {
-        /**
+    public static final String sale    = ChargeSauv.sale;
+    // private static final String sale    = "test_sale";
+    public static final String sucre   = ChargeSauv.sucre;
+    public static final String livres  = ChargeSauv.livres;
+    public static final String com     = ChargeSauv.com;
+    public static final String url     = ChargeSauv.url;
+    public static final String dates   = ChargeSauv.dates;
+    public static final String textes  = ChargeSauv.textes;
+
+    /**
      * Choix de la catégorie.
      * 
      * (salé ou sucré)
@@ -30,7 +38,7 @@ public class Charger
      *      Le choix du fichier de recettes.
      */
     public Charger(String s){
-        this.choixduPeuple = s.equals("sale") ? ChargeSauv.sale : ChargeSauv.sucre;
+        this.choixduPeuple = s.equals("sale") ? Charger.sale : Charger.sucre;
         this.recettes = lireRecettes();
     }
     
@@ -92,7 +100,7 @@ public class Charger
      */
     public static Vector<String> indexLivres()
     {
-        return Charger.lireIndexes(ChargeSauv.livres);
+        return Charger.lireIndexes(Charger.livres);
     }
     
     /**
@@ -102,7 +110,7 @@ public class Charger
      */
     public static Vector<String> indexComs() // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
     {
-        return Charger.lireIndexes(ChargeSauv.com);
+        return Charger.lireIndexes(Charger.com);
     }
     
     /**
@@ -112,12 +120,12 @@ public class Charger
      */
     public static Vector<String> indexDates() // de même que pour les commentaires
     {
-        return Charger.lireIndexes(ChargeSauv.dates);
+        return Charger.lireIndexes(Charger.dates);
     }
     
     public static Vector<String> indexTextes()
     {
-        return Charger.lireIndexes(ChargeSauv.textes);
+        return Charger.lireIndexes(Charger.textes);
     }
     /**
      * Charge les URLs dans un tableau.
@@ -126,13 +134,16 @@ public class Charger
      */
     public static Vector<String> indexURL() // de même que pour les commentaires
     {
-        return Charger.lireIndexes(ChargeSauv.url);
+        return Charger.lireIndexes(Charger.url);
     }
     
     private String motParentheses(String chaine)
     {
         String[] mots = chaine.split("\\(|\\)");
-        return mots[0];
+        if (mots.length > 0)
+            return mots[0];
+        else
+            return "";
     }
     /**
      * Charge les recettes (salé ou sucré) dans un tableau
@@ -178,7 +189,7 @@ public class Charger
                         }
                         if (mots.length >= 4 && mots[3] != null)
                         {
-                            String s = motParentheses(mots[2]);
+                            String s = motParentheses(mots[3]);
                             r.setPage(Integer.parseInt(s.equals("") ? "-1" : s));
                         }
                         if (mots.length >= 5 && mots[4] != null)

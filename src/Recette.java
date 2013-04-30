@@ -32,7 +32,7 @@ public class Recette implements Comparator<Recette>
      * 
      * @see Recette#getPage()
      */
-    private int page;
+    private int page = -1;
     
     /**
      * Lien de la recette.
