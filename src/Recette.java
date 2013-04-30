@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.lang.Object;
+import java.util.Vector;
 
 /**
  * @class Recette
@@ -381,7 +382,14 @@ public class Recette implements Comparator<Recette>
      */
     public String toString()
     {
-        return this.nom + ", " + this.livre + ", " + this.page + ", " + this.lien.toString();
+        StringBuffer sb = new StringBuffer(nom);
+
+        if (this.livre != null)
+            sb.append(", " + this.livre + ", " + this.page);
+        if (this.lien != null)
+            sb.append(", " + this.lien.toString());
+
+        return sb.toString();
     }
 
     /**

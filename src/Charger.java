@@ -13,30 +13,9 @@ import java.io.FileNotFoundException;
  * @class Charger
  * @brief Gestion des charges des informations de toutes les recettes
  */
-public class Charger{
-    
-    /**
-     * Chemin vers l'index.
-     */
-    private final String Index = "data/index_livres.txt";
-    
-    /**
-     * Chemin vers les commentaires.
-     */
-    private final String Com = "data/commentaire.txt";
-    
-    /**
-     * Chemin vers les url.
-     */
-    private final String Url = "data/url.txt";
-    
-    /**
-     * Chemin vers les préparations.
-     */
-    private final String Preparation = "data/preparation.txt"; // texte avec les préparations
-    
-    private final String Texte = "data/texte.txt";
-    /**
+public class Charger
+{
+        /**
      * Choix de la catégorie.
      * 
      * (salé ou sucré)
@@ -51,10 +30,15 @@ public class Charger{
      *      Le choix du fichier de recettes.
      */
     public Charger(String s){
-        this.choixduPeuple = "data/"+s+".txt";
+        this.choixduPeuple = s.equals("sale") ? ChargeSauv.sale : ChargeSauv.sucre;
         this.recettes = lireRecettes();
     }
     
+    public Vector<Recette> getRecettes()
+    {
+        return this.recettes;
+    }
+
     public static Vector<String> lireIndexes(String fichier)
     {
         Vector <String> indexes = new Vector<String>();
@@ -67,16 +51,30 @@ public class Charger{
             {
                 while ((ligne = input.readLine()) != null)
                 {
-                    String[] mots = ligne.split(".\\s*");
-                    int indice = Integer.parseInt(mots[0]);
-                    if (indexes.size() < indice)
-                        indexes.setSize(indice);
-                    indexes.setElementAt(mots[1], indice - 1);
+                    String[] mots = ligne.split("\\.\\s*");
+                    if (mots.length >= 1)
+                    {
+                        int indice = Integer.parseInt(mots[0]);
+                        if (indexes.size() < indice)
+                            indexes.setSize(indice);
+                        indexes.setElementAt(mots[1], indice - 1);
+                    }
                 }
             }
             catch (IOException ioe)
             {
                 System.err.println(ioe.getMessage());
+            }
+            finally
+            {
+                try
+                {
+                    input.close();
+                }
+                catch (IOException ioe)
+                {
+                    System.err.println(ioe.getMessage());
+                }
             }
         }
         catch (FileNotFoundException fnfe)
@@ -92,9 +90,9 @@ public class Charger{
      * 
      * @return Un tableau avec les livres utilisés dans l'index.
      */
-    public Vector<String> indexLivres()
+    public static Vector<String> indexLivres()
     {
-        return Charger.lireIndexes(Index);
+        return Charger.lireIndexes(ChargeSauv.livres);
     }
     
     /**
@@ -102,9 +100,9 @@ public class Charger{
      * 
      * @return Un tableau avec les commentaires dans l'ordre des indices.
      */
-    public Vector<String> indexComs() // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
+    public static Vector<String> indexComs() // je prends comme convention qu'il n'y a qu'un espace entre "chiffre." et le commentaire (à la différence de l'index)
     {
-        return Charger.lireIndexes(Com);
+        return Charger.lireIndexes(ChargeSauv.com);
     }
     
     /**
@@ -112,23 +110,23 @@ public class Charger{
      * 
      * @return Un tableau avec les préparations dans l'ordre des indices.
      */
-    public Vector<String> indexPreps() // de même que pour les commentaires
+    public static Vector<String> indexDates() // de même que pour les commentaires
     {
-        return Charger.lireIndexes(Preparation);
+        return Charger.lireIndexes(ChargeSauv.dates);
     }
     
-    public Vector<String> indexTextes()
+    public static Vector<String> indexTextes()
     {
-        return Charger.lireIndexes(Texte);
+        return Charger.lireIndexes(ChargeSauv.textes);
     }
     /**
      * Charge les URLs dans un tableau.
      * 
      * @return Un tableau avec les URLs dans l'ordre des indices.
      */
-    public Vector<String> indexURL() // de même que pour les commentaires
+    public static Vector<String> indexURL() // de même que pour les commentaires
     {
-        return Charger.lireIndexes(Url);
+        return Charger.lireIndexes(ChargeSauv.url);
     }
     
     private String motParentheses(String chaine)
@@ -144,11 +142,11 @@ public class Charger{
     public Vector<Recette> lireRecettes()
     {
         Vector<Recette> listRec = new Vector<Recette>();
-        Vector<String> livres = indexLivres();
-        Vector<String> coms = indexComs();
-        Vector<String> urls = indexURL();
-        Vector<String> preps = indexPreps();
-        Vector<String> textes = indexTextes();
+        Vector<String> livres = Charger.indexLivres();
+        Vector<String> coms = Charger.indexComs();
+        Vector<String> urls = Charger.indexURL();
+        Vector<String> preps = Charger.indexDates();
+        Vector<String> textes = Charger.indexTextes();
         
         try
         {
@@ -164,35 +162,60 @@ public class Charger{
                 {
                     if (Charger.est_une_sous_cat(line)==true)
                     {
-                        String[] mots = line.split("\\*\\s*|\\:");
-                        scat = new String(mots[0]);
+                        String[] mots = line.split("^\\*\\s*|\\:");
+                        scat = new String(mots[1]);
                     }
                     else if(Charger.est_une_recette(line)==true)
                     {
                         Recette r;
-                        String[] mots = line.split("\\-\\s*|\\s*");
-                        r = new Recette(mots[0]);
-                        if (mots.length >= 2)
-                            r.setLivre(livres.elementAt(Integer.parseInt(motParentheses(mots[1]))));
-                        if (mots.length >= 3)
-                            r.setPage(Integer.parseInt(motParentheses(mots[2])));
-                        if (mots.length >= 4)
-                            r.setLien(urls.elementAt(Integer.parseInt(motParentheses(mots[3]))));
-                        if (mots.length >= 5)
-                            r.setDate(new Date(Long.parseLong(preps.elementAt(Integer.parseInt(motParentheses(mots[4]))))));
-                        if (mots.length >= 6)
+                        String[] mots = line.split("^\\-\\s*|\\s*\\(");
+                        r = new Recette(mots[1], choixduPeuple, scat);
+                        if (mots.length >= 3 && mots[2] != null)
+                        {
+                            String s = motParentheses(mots[2]);
+                            if (!s.equals(""))
+                                r.setLivre(livres.elementAt(Integer.parseInt(s) - 1));
+                        }
+                        if (mots.length >= 4 && mots[3] != null)
+                        {
+                            String s = motParentheses(mots[2]);
+                            r.setPage(Integer.parseInt(s.equals("") ? "-1" : s));
+                        }
+                        if (mots.length >= 5 && mots[4] != null)
+                        {
+                            String s = motParentheses(mots[4]);
+                            if (!s.equals(""))
+                                r.setLien(urls.elementAt(Integer.parseInt(s) - 1));
+                        }
+                        if (mots.length >= 6 && mots[5] != null)
+                        {
+                            String s = motParentheses(mots[5]);
+                            if (!s.equals(""))
+                                r.setDate(new Date(Long.parseLong(preps.elementAt(Integer.parseInt(s) - 1))));
+                        }
+                        if (mots.length >= 7 && mots[6] != null)
                             try
                             {
-                                r.setNote(Integer.parseInt(motParentheses(mots[5])));
+                                String s = motParentheses(mots[6]);
+                                if (!s.equals(""))
+                                    r.setNote(Integer.parseInt(s));
                             }
                             catch (Exception e)
                             {
                                 System.err.println(e.getMessage());
                             }
-                        if (mots.length >= 7)
-                            r.setCommentaire(coms.elementAt(Integer.parseInt(motParentheses(mots[6]))));
-                        if (mots.length >= 8)
-                            r.setTexte(textes.elementAt(Integer.parseInt(motParentheses(mots[7]))));
+                        if (mots.length >= 8 && mots[7] != null)
+                        {
+                            String s = motParentheses(mots[7]);
+                            if (!s.equals(""))
+                                r.setCommentaire(coms.elementAt(Integer.parseInt(s) - 1));
+                        }
+                        if (mots.length >= 9 && mots[8] != null)
+                        {
+                            String s = motParentheses(mots[8]);
+                            if (!s.equals(""))
+                                r.setTexte(textes.elementAt(Integer.parseInt(s) - 1));
+                        }
 
                         listRec.add(r);
                     }
@@ -291,7 +314,7 @@ public class Charger{
      */
     public int countNbPrep()
     {
-        return indexPreps().size();
+        return indexDates().size();
     }
 
     /**
@@ -313,9 +336,12 @@ public class Charger{
      */
     public static boolean est_une_sous_cat(String s)
     {
-        if (s.charAt(0)=='*')
+        if (s.length() == 0)
+            return false;
+        else if (s.charAt(0)=='*')
             return true;
-        return false;
+        else
+            return false;
     }
 
     /**
@@ -325,9 +351,12 @@ public class Charger{
      */
     public static boolean est_une_recette(String s)
     {
-        if (s.charAt(0)=='-')
+        if (s.length() == 0)
+            return false;
+        else if (s.charAt(0)=='-')
             return true;
-        return false;
+        else
+            return false;
     }
 
 }

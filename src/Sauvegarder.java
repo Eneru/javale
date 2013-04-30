@@ -5,12 +5,21 @@ import java.io.IOException;
 
 public class Sauvegarder
 {
-    private final String sale = "data/sale.txt";
-    private final String sucre = "data/sucre.txt";
-    // private final String Index = "data/index_livres.txt";
-    // private final String Com = "data/commentaire.txt";
-    // private final String Url = "data/url.txt";
-    // private final String Preparation = "data/preparation.txt"; // texte avec les préparations
+    // private static final String sale    = ChargeSauv.sale;
+    // private static final String sucre   = ChargeSauv.sucre;
+    // private static final String livres  = ChargeSauv.livres;
+    // private static final String com     = ChargeSauv.com;
+    // private static final String url     = ChargeSauv.url;
+    // private static final String dates   = ChargeSauv.dates;
+    // private static final String textes  = ChargeSauv.textes;
+
+    private static final String sale    = "test_sale";
+    private static final String sucre   = "test_sucre";
+    private static final String livres  = "test_livres";
+    private static final String com     = "test_com";
+    private static final String url     = "test_url";
+    private static final String dates   = "test_dates";
+    private static final String textes  = "test_textes";
 
     private FileWriter livresW;
     private FileWriter comW;
@@ -27,23 +36,24 @@ public class Sauvegarder
 
     public Sauvegarder(String categorie)
     {
-        this.listeLivres = new Vector<String>();
-        this.listeComs = new Vector<String>();
-        this.listeURLs = new Vector<String>();
-        this.listeDates = new Vector<String>();
+        this.listeLivres = Charger.indexLivres();
+        this.listeComs = Charger.indexComs();
+        this.listeURLs = Charger.indexURL();
+        this.listeDates = Charger.indexDates();
+        this.listeTextes = Charger.indexTextes();
 
         try
         {
             if (categorie.equals("sale"))
-                this.recettes = new FileWriter(this.sale);
-            else if (categorie.equals("sucre"))
-                this.recettes = new FileWriter(this.sucre);
+                this.recettes = new FileWriter(Sauvegarder.sale);
+            else
+                this.recettes = new FileWriter(Sauvegarder.sucre);
 
-            this.livresW = new FileWriter("data/index_livres.txt");
-            this.comW = new FileWriter("data/commentaire.txt");
-            this.urlW = new FileWriter("data/url.txt");
-            this.dateW = new FileWriter("data/preparation.txt");
-            this.texteW = new FileWriter("data/texte.txt");
+            this.livresW = new FileWriter(Sauvegarder.livres);
+            this.comW = new FileWriter(Sauvegarder.com);
+            this.urlW = new FileWriter(Sauvegarder.url);
+            this.dateW = new FileWriter(Sauvegarder.dates);
+            this.texteW = new FileWriter(Sauvegarder.textes);
         }
         catch(IOException ioe)
         {
@@ -76,18 +86,18 @@ public class Sauvegarder
     {
         Recette[] listeRecettesTriee = Arrays.copyOf(listeRecettes, listeRecettes.length);
         Arrays.sort(listeRecettesTriee, new Recette());
-        String categorieCourante = "";
+        String sousCategorieCourante = "";
         for (int i = 0; i < listeRecettesTriee.length; i++)
         {
             try
             {
-                if (! categorieCourante.equals(listeRecettesTriee[i].getCategorie()))
+                if (! sousCategorieCourante.equals(listeRecettesTriee[i].getSousCategorie()))
                 {
-                    categorieCourante = listeRecettesTriee[i].getCategorie();
-                    this.recettes.write("\n* " + categorieCourante + ":\n");
+                    sousCategorieCourante = listeRecettesTriee[i].getSousCategorie();
+                    this.recettes.write("\n* " + sousCategorieCourante + ":\n");
                 }
 
-                this.recettes.write("- " + listeRecettesTriee[i].getNom());
+                this.recettes.write("- " + listeRecettesTriee[i].getNom() + " ");
 
                 if (listeRecettesTriee[i].getLivre() != null)
                     this.recettes.write("("
