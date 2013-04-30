@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.lang.Object;
+import java.util.Vector;
 
 /**
  * @class Recette
@@ -82,6 +83,15 @@ public class Recette implements Comparator<Recette>
      */
     private String texte;
 
+    public Recette()
+    {
+    }
+
+    public Recette(String nom)
+    {
+        this();
+        this.nom = new String(nom);
+    }
     /**
      * Constructeur d'une recette.
      * 
@@ -94,7 +104,7 @@ public class Recette implements Comparator<Recette>
      */
     public Recette(String nom, String categorie, String sousCategorie)
     {
-        this.nom = new String(nom);
+        this(nom);
         this.categorie = new String(categorie);
         this.sousCategorie = new String(sousCategorie);
     }
@@ -268,6 +278,15 @@ public class Recette implements Comparator<Recette>
         return this.texte;
     }
 
+    public void setCategorie(String categorie)
+    {
+        this.categorie = new String(categorie);
+    }
+
+    public void setSousCategorie(String sousCategorie)
+    {
+        this.sousCategorie = new String(sousCategorie);
+    }
     /**
      * Modificateur du livre.
      * 
@@ -363,7 +382,14 @@ public class Recette implements Comparator<Recette>
      */
     public String toString()
     {
-        return this.nom + ", " + this.livre + ", " + this.page + ", " + this.lien.toString();
+        StringBuffer sb = new StringBuffer(nom);
+
+        if (this.livre != null)
+            sb.append(", " + this.livre + ", " + this.page);
+        if (this.lien != null)
+            sb.append(", " + this.lien.toString());
+
+        return sb.toString();
     }
 
     /**
@@ -380,7 +406,7 @@ public class Recette implements Comparator<Recette>
      */
     public int compare(Recette r1, Recette r2)
     {
-        return r1.nom.compareTo(r2.nom);
+        return r1.sousCategorie.compareTo(r2.sousCategorie);
     }
 
     /**
