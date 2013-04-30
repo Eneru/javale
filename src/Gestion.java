@@ -123,6 +123,159 @@ public class Gestion
             sucrees.add(r);
     }
 
+    private static Vector<Recette> supprimerRecetteVector(Vector<Recette> recettes, Recette r)
+    {
+        recettes.remove(r);
+        return recettes;
+    }
+
+    public void supprimerRecetteSucree(Recette r)
+    {
+        sucrees = supprimerRecetteVector(sucrees, r);
+    }
+
+    public void supprimerRecetteSalee(Recette r)
+    {
+        salees = supprimerRecetteVector(salees, r);
+    }
+
+    private static Vector<Recette> supprimerRecetteVector(Vector<Recette> recettes, String s)
+    {
+        return supprimerRecetteVector(recettes, rechercheVector(recettes, s));
+    }
+
+    public void supprimerRecetteSucree(String s)
+    {
+        sucrees = supprimerRecetteVector(sucrees, s);
+    }
+
+    public void supprimerRecetteSalee(String s)
+    {
+        salees = supprimerRecetteVector(salees, s);
+    }
+
+    private static Vector<Recette> sortVectorRecettes(Vector<Recette> recettes)
+    {
+        Recette[] tab = recettes.toArray(new Recette[0]);
+        Arrays.sort(tab);
+        return new Vector<Recette>(Arrays.asList(tab));
+    }
+
+    private void sortRecettesSucrees()
+    {
+        sucrees = sortVectorRecettes(sucrees);
+    }
+
+    private void sortRecettesSalees()
+    {
+        salees = sortVectorRecettes(salees);
+    }
+
+    private void sortRecettes()
+    {
+        sortRecettesSucrees();
+        sortRecettesSalees();
+    }
+
+    private static String[] listeRecetteToStringTab(Vector<Recette> recettes)
+    {
+        Vector<String> liste = new Vector<String>();
+        for (int i = 0; i < recettes.size(); i++)
+            liste.add(recettes.elementAt(i).getNom());
+
+        return liste.toArray(new String[0]);
+    }
+
+    private boolean existeRecetteVector(Vector<Recette> recettes, String recherche)
+    {
+        return Arrays.binarySearch(listeRecetteToStringTab(sortVectorRecettes(recettes)), recherche) >= 0;
+    }
+
+    public boolean existeRecetteSucree(String recette)
+    {
+        return existeRecetteVector(sucrees, recette);
+    }
+
+    public boolean existeRecetteSalee(String recette)
+    {
+        return existeRecetteVector(salees, recette);
+    }
+
+    public boolean existeRecette(String recette)
+    {
+        return existeRecetteSalee(recette) || existeRecetteSucree(recette);
+    }
+
+    private boolean existeRecetteVector(Vector<Recette> recettes, Recette recherche)
+    {
+        return recettes.contains(recherche);
+    }
+
+    public boolean existeRecetteSucree(Recette recette)
+    {
+        return existeRecetteVector(sucrees, recette);
+    }
+
+    public boolean existeRecetteSalee(Recette recette)
+    {
+        return existeRecetteVector(salees, recette);
+    }
+
+    public boolean existeRecette(Recette recette)
+    {
+        return existeRecetteSalee(recette) || existeRecetteSucree(recette);
+    }
+
+    private static Recette rechercheVector(Vector<Recette> recettes, String recherche)
+    {
+        for (int i = 0; i < recettes.size(); i++)
+            if (recettes.elementAt(i).getNom().equals(recherche))
+                return recettes.elementAt(i);
+
+        return null;
+    }
+
+    public Recette rechercheSucree(String recherche)
+    {
+        return rechercheVector(sucrees, recherche);
+    }
+
+    public Recette rechercheSalee(String recherche)
+    {
+        return rechercheVector(salees, recherche);
+    }
+
+    public Recette recherche(String recherche)
+    {
+        Recette r = rechercheSalee(recherche);
+
+        if (r != null)
+            return r;
+        else
+            return rechercheSucree(recherche);
+    }
+
+    private static Vector<Recette> recherchePartielle(Vector<Recette> recettes, String recherche)
+    {
+        Vector<Recette> liste = new Vector<Recette>();
+
+        for (int i = 0; i < recettes.size(); i++)
+            if (recettes.elementAt(i).getNom().matches(recherche))
+                liste.add(recettes.elementAt(i));
+
+        return liste;
+    }
+
+    public Vector<Recette> recherchePartielleSucree(String recherche)
+    {
+        return recherchePartielle(sucrees, recherche);
+    }
+
+    public Vector<Recette> recherchePartielleSalee(String recherche)
+    {
+        return recherchePartielle(salees, recherche);
+    }
+
     public static void main(String[] args)
     {
         Vector<Recette> rr = Charger.lireRecettes("sale");
