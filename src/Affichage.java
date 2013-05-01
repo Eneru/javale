@@ -133,24 +133,26 @@ public class Affichage
 		Scanner sc = new Scanner(System.in);
 		Affichage.affichePrompt();
 		int rep = sc.nextInt();
+		int test;
 		String repChaine;
 		while (rep != 0)
 		{
 			switch(rep)
 			{
-				case 1 : System.out.print("\nLivre : ");
+				case 1 : repChaine = sc.nextLine(); // vide le buffer
+						 System.out.print("\nLivre : ");
 						 repChaine = sc.nextLine();
 						 nr.setLivre(repChaine);
 						 System.out.print("\nPage (0 s'il n'y en a pas): ");
-						 rep = sc.nextInt();
-						 nr.setPage(rep);
+						 test = sc.nextInt();
+						 nr.setPage(test);
 						 break;
 				
 				case 2 : System.out.print("\nNote (sur 10): ");
-						 rep = sc.nextInt();
+						 test = sc.nextInt();
 						 try
 						 {
-							nr.setNote(rep);
+							nr.setNote(test);
 						 }
 						 catch (Exception e)
 						 {
@@ -158,12 +160,14 @@ public class Affichage
 						 }
 						 break;
 				
-				case 3 : System.out.print("\nCommentaire : ");
+				case 3 : repChaine = sc.nextLine(); // vide le buffer
+						 System.out.print("\nCommentaire : ");
 						 repChaine = sc.nextLine();
 						 nr.setCommentaire(repChaine);
 						 break;
 				
-				case 4 : System.out.print("\nLien : ");
+				case 4 : repChaine = sc.nextLine(); // vide le buffer
+						 System.out.print("\nLien : ");
 						 repChaine = sc.nextLine();
 						 nr.setLien(repChaine);
 						 break;
@@ -174,7 +178,8 @@ public class Affichage
 						 nr.setDate(d);
 						 break;
 				
-				case 6 : System.out.print("\nTexte (sur une ligne) : ");
+				case 6 : repChaine = sc.nextLine(); // vide le buffer
+						 System.out.print("\nTexte (sur une ligne) : ");
 						 repChaine = sc.nextLine();
 						 nr.setTexte(repChaine);
 						 break;
@@ -204,6 +209,10 @@ public class Affichage
 			g.supprimerRecetteSucree(rep);
 		else
 			System.out.println("\nLa recette que vous avez entrée n'existe pas\n");
+		Sauvegarder sa = new Sauvegarder("sale");
+		Sauvegarder su = new Sauvegarder("sucre");
+		sa.sauvegarderRecettes(g.getSalees().toArray(new Recette[0]));
+		su.sauvegarderRecettes(g.getSucrees().toArray(new Recette[0]));
 	}
 			
 	/**
@@ -274,7 +283,7 @@ public class Affichage
 		
 	public static void main(String[] args)
 	{
-		System.out.println("Bienvenu sur le gestionnaire de recettes\n");
+		System.out.println("Bienvenue sur le gestionnaire de recettes\n");
 		Affichage.aidePrincipale();
 		System.out.println("- Aide : Réafficher ce menu\n");
 		while(quit)
