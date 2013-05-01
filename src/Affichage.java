@@ -3,10 +3,20 @@ import java.lang.System;
 import java.util.Date;
 
 
-
+/**
+ * @class Affichage
+ * @brief Main
+ */
 public class Affichage
-{	
+{
+	/**
+	 * Variable servant à charger les fichiers et les souvegarder
+	 */	
 	static Gestion g = new Gestion();
+	
+	/**
+	 * Variable permettant de quitter ou de continuer
+	 */
 	static private boolean quit = true;
 	
 	public Affichage()
@@ -17,6 +27,9 @@ public class Affichage
 		quit=false;
 	}
 	
+	/**
+	 * Affichage de l'aide.
+	 */
 	public static void aidePrincipale()
 	{
 		System.out.println("- Ajout : Ajouter une recette");
@@ -27,6 +40,9 @@ public class Affichage
 		System.out.println("- Quitter : Quitter le gestionnaire de recette\n");
 	}
 	
+	/**
+	 * Affichage du menu principal.
+	 */
 	public static void menuPrincipal()
 	{
 		String rep;
@@ -53,6 +69,9 @@ public class Affichage
 		}
 	}
 	
+	/**
+	 * Ajout d'une recette.
+	 */
 	public static void ajout()
 	{
 		Recette[] rArray;
@@ -62,7 +81,7 @@ public class Affichage
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Entrez la catégorie : ");
 		cat = sc.nextLine();
-		while ("sucre".equals(cat) != true || "sale".equals(cat) != true || "Quitter".equals(cat) == true)
+		while ("sucre".equals(cat) == false && "sale".equals(cat) == false && "Quitter".equals(cat) == false)
 		{
 			System.out.print("Catégorie inexistante, entrez à nouveau la catégorie (sucre ou sale) : ");
 			cat = sc.nextLine();
@@ -93,6 +112,14 @@ public class Affichage
 		}
 	}
 	
+	/**
+	 * Menu d'ajout d'une recette.
+	 * 
+	 * @param r
+	 * 		Recette à ajouter.
+	 * @return nr
+	 * 		Recette avec toutes les informations voulues
+	 */
 	public static Recette menuAjout(Recette r)
 	{
 		Recette nr = r;
@@ -163,6 +190,9 @@ public class Affichage
 		return nr;
 	}
 	
+	/**
+	 * Supprime une recette.
+	 */
 	public static void suppr()
 	{
 		System.out.print("Entrez un nom de recette à supprimer : ");
@@ -176,7 +206,9 @@ public class Affichage
 			System.out.println("\nLa recette que vous avez entrée n'existe pas\n");
 	}
 			
-	
+	/**
+	 * Recherche une recette dans le gestionnaire.
+	 */
 	public static void rech()
 	{
 		String rep;
@@ -206,6 +238,9 @@ public class Affichage
 		}
 	}
 	
+	/**
+	 * Retourne les sous-catégories
+	 */
 	public static void souscat()
 	{
 		for (int i = 0 ; i < g.sousCat().size() ; i++)
@@ -215,6 +250,9 @@ public class Affichage
 		System.out.println(" ");
 	}
 	
+	/**
+	 * Retourne toutes les recettes d'une sous-catégorie.
+	 */
 	public static void rec ()
 	{
 		System.out.println("\nEntrez une sous-catégorie");
@@ -225,7 +263,10 @@ public class Affichage
 			System.out.println(g.sousCatRecette(str).elementAt(i).toString());
 		}
 	}
-		
+	
+	/**
+	 * Affiche le prompt.
+	 */	
 	public static void affichePrompt()
 	{
 		System.out.print("\n> ");
