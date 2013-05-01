@@ -8,7 +8,7 @@ vpath %.class bytecode/
 vpath %.html html/
 
 main : | bytecode
-	$(CC) -sourcepath $(CPATH) -cp $(BPATH) -d $(BPATH) src/main.java
+	$(CC) -sourcepath $(CPATH) -cp $(BPATH) -d $(BPATH) src/Affichage.java
 
 %.class : %.java | bytecode
 		$(CC) -sourcepath $(CPATH) -cp $(BPATH) -d $(BPATH) $(CPATH)/$<
@@ -24,6 +24,9 @@ clean :
 
 cleanall : clean
 		rm -r doc/*
+		
+lanceur:
+	java -cp bytecode/ Affichage
 
 archive :
 		tar -f projet-POO1-L2S4_javale.tar.gz -cvz src/*.java data/*.txt html/* makefile
