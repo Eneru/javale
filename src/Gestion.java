@@ -2,11 +2,30 @@ import java.lang.Object;
 import java.util.Arrays;
 import java.util.Vector;
 
+/**
+ * @class Gestion
+ * @brief Gestion des fichiers data
+ */
 public class Gestion
 {
+	/**
+	 * Liste des recettes salées.
+	 * 
+	 * @see getSalees#Gestion
+	 */
     Vector<Recette> salees;
+    
+    /**
+	 * Liste des recettes sucrées.
+	 * 
+	 * @see getSucrees#Gestion
+	 */
     Vector<Recette> sucrees;
 
+	/**
+	 * Constructeur des gestions.
+	 * 
+	 */
     public Gestion()
     {
         this.salees = Charger.lireRecettes("sale");
@@ -83,16 +102,38 @@ public class Gestion
         return sousCatRecette(souscat).size();
     }
 
+	/**
+	 * Liste toutes les recettes sucrées.
+	 * 
+	 * @return sucrees
+	 * 		Vector des recettes sucrées.
+	 */
     public Vector<Recette> getSucrees()
     {
         return sucrees;
     }
 
+	/**
+	 * Liste toutes les recettes salées.
+	 * 
+	 * @return sucrees
+	 * 		Vector des recettes salées.
+	 */
     public Vector<Recette> getSalees()
     {
         return salees;
     }
 
+	/**
+	 * Charge les recettes d'une sous catégorie
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @param sousCategorie
+	 * 		La sous-catégorie concernée.
+	 * @return recSousCat
+	 * 		Un vector des recettes de la sous-catégorie.
+	 */
     public static Vector<Recette> sousCategoriesVector(Vector<Recette> recettes, String sousCategorie)
     {
         Vector<Recette> recSousCat = new Vector<Recette>();
@@ -104,6 +145,14 @@ public class Gestion
         return recSousCat;
     }
 
+	/**
+	 * Liste les sous-catégories de recettes.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @return liste
+	 * 		Liste des sous-catégories.
+	 */
     public static Vector<String> listeSousCatVector(Vector<Recette> recettes)
     {
         Vector<String> liste = new Vector<String>();
@@ -115,6 +164,12 @@ public class Gestion
         return liste;
     }
 
+	/**
+	 * Ajout d'une recette dans salees ou sucrees.
+	 * 
+	 * @param r
+	 * 		Recette à ajouter.
+	 */
     public void ajouterRecette(Recette r)
     {
         if (r.getCategorie().equals("sale"))
@@ -123,37 +178,89 @@ public class Gestion
             sucrees.add(r);
     }
 
+	/**
+	 * Supprime une recette dans une liste de recettes.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @param r
+	 * 		Recette à supprimer.
+	 * @return recettes
+	 * 		recettes-r.
+	 */
     private static Vector<Recette> supprimerRecetteVector(Vector<Recette> recettes, Recette r)
     {
         recettes.remove(r);
         return recettes;
     }
 
+	/**
+	 * Supprime une recette sucrée.
+	 * 
+	 * @param r
+	 * 		Recette à supprimer.
+	 */
     public void supprimerRecetteSucree(Recette r)
     {
         sucrees = supprimerRecetteVector(sucrees, r);
     }
 
+	/**
+	 * Supprime une recette salée.
+	 * 
+	 * @param r
+	 * 		Recette à supprimer.
+	 */
     public void supprimerRecetteSalee(Recette r)
     {
         salees = supprimerRecetteVector(salees, r);
     }
 
+	/**
+	 * Supprime une recette dans une liste de recettes à l'aide du nom.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @param s
+	 * 		Nom de la recette à supprimer.
+	 * @return recettes
+	 * 		recettes-s.
+	 */
     private static Vector<Recette> supprimerRecetteVector(Vector<Recette> recettes, String s)
     {
         return supprimerRecetteVector(recettes, rechercheVector(recettes, s));
     }
 
+	/**
+	 * Supprime une recette sucrée à l'aide du nom.
+	 * 
+	 * @param s
+	 * 		Nom de la recette à supprimer.
+	 */
     public void supprimerRecetteSucree(String s)
     {
         sucrees = supprimerRecetteVector(sucrees, s);
     }
-
+	
+	/**
+	 * Supprime une recette salée à l'aide du nom.
+	 * 
+	 * @param s
+	 * 		Nom de la recette à supprimer.
+	 */
     public void supprimerRecetteSalee(String s)
     {
         salees = supprimerRecetteVector(salees, s);
     }
 
+	/**
+	 * Trie une liste de recettes.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @return tab
+	 * 		Liste de recettes triée.
+	 */
     private static Vector<Recette> sortVectorRecettes(Vector<Recette> recettes)
     {
         Recette[] tab = recettes.toArray(new Recette[0]);
@@ -161,22 +268,39 @@ public class Gestion
         return new Vector<Recette>(Arrays.asList(tab));
     }
 
+	/**
+	 * Trie les recettes sucrées.
+	 */
     private void sortRecettesSucrees()
     {
         sucrees = sortVectorRecettes(sucrees);
     }
 
+	/**
+	 * Trie les recettes salées.
+	 */
     private void sortRecettesSalees()
     {
         salees = sortVectorRecettes(salees);
     }
 
+	/**
+	 * Trie toutes les recettes.
+	 */
     private void sortRecettes()
     {
         sortRecettesSucrees();
         sortRecettesSalees();
     }
 
+	/**
+	 * Retourne les noms de la liste de recettes.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @return liste
+	 * 		Liste de nom de recettes.
+	 */
     private static String[] listeRecetteToStringTab(Vector<Recette> recettes)
     {
         Vector<String> liste = new Vector<String>();
@@ -186,46 +310,115 @@ public class Gestion
         return liste.toArray(new String[0]);
     }
 
+	/**
+	 * Existence d'une recette dans une liste de recettes.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @param recherche
+	 * 		Nom de la recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     private boolean existeRecetteVector(Vector<Recette> recettes, String recherche)
     {
         return Arrays.binarySearch(listeRecetteToStringTab(sortVectorRecettes(recettes)), recherche) >= 0;
     }
 
+	/**
+	 * Existence d'une recette dans la liste des recettes sucrées.
+	 * 
+	 * @param recette
+	 * 		Nom de la recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     public boolean existeRecetteSucree(String recette)
     {
         return existeRecetteVector(sucrees, recette);
     }
 
+	/**
+	 * Existence d'une recette dans la liste des recettes salées.
+	 * 
+	 * @param recette
+	 * 		Nom de la recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     public boolean existeRecetteSalee(String recette)
     {
         return existeRecetteVector(salees, recette);
     }
-
+	
+	/**
+	 * Existence d'une recette dans la liste des recettes du gestionnaire.
+	 * 
+	 * @param recette
+	 * 		Nom de la recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     public boolean existeRecette(String recette)
     {
         return existeRecetteSalee(recette) || existeRecetteSucree(recette);
     }
 
+	/**
+	 * Existence d'une recette dans une liste de recettes.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @param recherche
+	 * 		Recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     private boolean existeRecetteVector(Vector<Recette> recettes, Recette recherche)
     {
         return recettes.contains(recherche);
     }
 
+	/**
+	 * Existence d'une recette dans la liste des recettes sucrées.
+	 * 
+	 * @param recette
+	 * 		Recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     public boolean existeRecetteSucree(Recette recette)
     {
         return existeRecetteVector(sucrees, recette);
     }
 
+	/**
+	 * Existence d'une recette dans la liste des recettes salées.
+	 * 
+	 * @param recette
+	 * 		Recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     public boolean existeRecetteSalee(Recette recette)
     {
         return existeRecetteVector(salees, recette);
     }
 
+	/**
+	 * Existence d'une recette dans la liste des recettes du gestionnaire.
+	 * 
+	 * @param recette
+	 * 		Recette recherchée.
+	 * @return true si elle existe, false sinon.
+	 */
     public boolean existeRecette(Recette recette)
     {
         return existeRecetteSalee(recette) || existeRecetteSucree(recette);
     }
 
+	/**
+	 * Retourne la recette si elle existe.
+	 * 
+	 * @param recettes
+	 * 		Liste de recettes.
+	 * @param recherche
+	 * 		Nom de recette à rechercher dans la liste.
+	 * @return La recette recherchée.
+	 */
     private static Recette rechercheVector(Vector<Recette> recettes, String recherche)
     {
         for (int i = 0; i < recettes.size(); i++)
@@ -235,16 +428,37 @@ public class Gestion
         return null;
     }
 
+	/**
+	 * Retourne la recette si elle existe dans la liste des recettes sucrées.
+	 * 
+	 * @param recherche
+	 * 		Nom de recette à rechercher dans la liste.
+	 * @return La recette recherchée.
+	 */
     public Recette rechercheSucree(String recherche)
     {
         return rechercheVector(sucrees, recherche);
     }
 
+	/**
+	 * Retourne la recette si elle existe dans la liste des recettes salées.
+	 * 
+	 * @param recherche
+	 * 		Nom de recette à rechercher dans la liste.
+	 * @return La recette recherchée.
+	 */
     public Recette rechercheSalee(String recherche)
     {
         return rechercheVector(salees, recherche);
     }
 
+	/**
+	 * Retourne la recette si elle existe dans la liste des recettes du gestionnaire.
+	 * 
+	 * @param recherche
+	 * 		Nom de recette à rechercher dans la liste.
+	 * @return La recette recherchée.
+	 */
     public Recette recherche(String recherche)
     {
         Recette r = rechercheSalee(recherche);
@@ -274,15 +488,5 @@ public class Gestion
     public Vector<Recette> recherchePartielleSalee(String recherche)
     {
         return recherchePartielle(salees, recherche);
-    }
-
-    public static void main(String[] args)
-    {
-        Vector<Recette> rr = Charger.lireRecettes("sale");
-        rr.add(new Recette("lolilol", "sale", "azerty", "ah", 3));
-        Recette[] r = rr.toArray(new Recette[0]);
-
-        Sauvegarder s = new Sauvegarder("sale");
-        s.sauvegarderRecettes(r);
     }
 }

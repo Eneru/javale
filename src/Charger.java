@@ -14,6 +14,14 @@ import java.util.Vector;
  */
 public class Charger extends ChargeSauv
 {
+	/**
+	 * Lit les indexes d'une fichier.
+	 * 
+	 * @param fichier
+	 * 		Le fichier que l'on veut lire.
+	 * @return indexes
+	 * 		Tableau des indexes.
+	 */
     public static Vector<String> lireIndexes(String fichier)
     {
         Vector <String> indexes = new Vector<String>();
@@ -259,8 +267,8 @@ public class Charger extends ChargeSauv
     }
 
     /**
-     * @fn public static boolean est_une_sous_cat(String s)
-     * @brief Teste si le mot est une sous catégorie
+     * Teste si le mot est une sous catégorie
+     * 
      * @return true si c'est une sous-catégorie, false sinon
      */
     private static boolean est_une_sous_cat(String s)
@@ -274,8 +282,8 @@ public class Charger extends ChargeSauv
     }
 
     /**
-     * @fn public static boolean est_une_recette(String s)
-     * @brief Teste si le mot est un début d'une recette
+     * Teste si le mot est un début d'une recette
+     * 
      * @return true si c'est une recette, false sinon
      */
     private static boolean est_une_recette(String s)

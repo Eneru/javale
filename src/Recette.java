@@ -392,6 +392,13 @@ public class Recette implements Comparable<Recette>
         return sb.toString();
     }
 
+	/**
+	 * Compare deux recettes.
+	 * 
+	 * @param r
+	 * 		Recette à comparer.
+	 * @return si égale 0 sinon si inférieur <0 sinon >0.
+	 */
     public int compareTo(Recette r)
     {
         return this.nom.compareTo(r.nom);

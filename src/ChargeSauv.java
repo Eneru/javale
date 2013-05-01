@@ -1,3 +1,7 @@
+/**
+ * @class ChargeSauv
+ * @brief Chemin vers data
+ */
 public abstract class ChargeSauv
 {
     public static final String sale     = "data/sale.txt";

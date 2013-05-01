@@ -1,5 +1,9 @@
 import java.util.Comparator;
 
+/**
+ * @class RecetteSousCatComparator
+ * @brief Comparateur de sous-catégories de recette
+ */
 public class RecetteSousCatComparator implements Comparator<Recette>
 {
     /**

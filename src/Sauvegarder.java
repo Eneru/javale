@@ -3,6 +3,10 @@ import java.util.Vector;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * @class Sauvegarder
+ * @brief Gestion de la sauvegarde
+ */
 public class Sauvegarder extends ChargeSauv
 {
 
@@ -12,8 +16,19 @@ public class Sauvegarder extends ChargeSauv
     private Vector<String> listeDates;
     private Vector<String> listeTextes;
 
+	/**
+	 * Variable de la catégorie.
+	 * 
+	 * @see Sauvgarder#Sauvegarder()
+	 */
     private String categorie;
 
+	/**
+	 * Constructeur de la sauvegarde
+	 * 
+	 * @param categorie
+	 * 		Catégorie de la sauvegarde.
+	 */
     public Sauvegarder(String categorie)
     {
         this.categorie = new String(categorie);
@@ -24,6 +39,18 @@ public class Sauvegarder extends ChargeSauv
         this.listeTextes = Charger.indexTextes();
     }
 
+	/**
+	 * Renvoie l'indice d'une chaine dans une liste
+	 * 
+	 * @param chaine
+	 * 		Chaine de caractères à écrire.
+	 * @param liste
+	 * 		Liste d'index.
+	 * @param fichier
+	 * 		Fichier dans lequel écrire.
+	 * @return index
+	 * 		Indice de la chaine de caractères.
+	 */
     private int indiceString(String chaine, Vector<String> liste, FileWriter fichier)
     {
         int index = liste.indexOf(chaine);
@@ -46,6 +73,12 @@ public class Sauvegarder extends ChargeSauv
         return index;
     }
 
+	/**
+	 * Sauvegarde les recettes.
+	 * 
+	 * @param listeRecettes
+	 * 		Liste des recettes.
+	 */
     public void sauvegarderRecettes(Recette[] listeRecettes)
     {
         FileWriter livresW;
