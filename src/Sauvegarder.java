@@ -58,7 +58,7 @@ public class Sauvegarder extends ChargeSauv
         if (index == -1)
         {
             liste.add(chaine);
-            index = liste.indexOf(chaine);
+            index = liste.indexOf(chaine) + 1;
             try
             {
                 fichier.write(index + ". " + chaine + "\n");
